@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary-400 hover:bg-primary-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-secondary-400 hover:bg-secondary-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .btn-success {
+    @apply px-6 py-3 bg-success-400 hover:bg-success-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-xl p-6;
+  }
+
+  .game-container {
+    @apply w-full max-w-4xl mx-auto;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  }
+}
