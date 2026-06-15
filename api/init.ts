@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@vercel/postgres'
 
 // 初始化数据库表（首次部署时调用一次）
 export default async function handler(req: any, res: any) {
@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
         grade INTEGER DEFAULT 1,
         created_at TIMESTAMP DEFAULT NOW()
       )
-    `;
+    `
 
     // 进度表
     await sql`
@@ -28,10 +28,10 @@ export default async function handler(req: any, res: any) {
         updated_at TIMESTAMP DEFAULT NOW(),
         UNIQUE(user_id)
       )
-    `;
+    `
 
-    res.status(200).json({ success: true, message: 'Database tables created' });
+    res.status(200).json({ success: true, message: 'Database tables created' })
   } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message })
   }
 }
