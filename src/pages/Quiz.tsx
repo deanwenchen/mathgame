@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getQuizStats, finishQuizGame, getAccuracy, type QuizStats } from '@utils/storage'
 
 interface Question {
   id: number
@@ -63,6 +64,7 @@ function Quiz() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [questionCount, setQuestionCount] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
+  const [stats, setStats] = useState<QuizStats>(() => getQuizStats())
 
   const handleAnswer = (answer: number) => {
     if (selectedAnswer !== null) return
@@ -93,6 +95,17 @@ function Quiz() {
   }
 
   const handleRestart = () => {
+    // 结算当局，写入 localStorage
+    if (questionCount > 0) {
+      const updated = finishQuizGame({
+        score,
+        level,
+        questions: questionCount,
+        correct: correctCount,
+      })
+      setStats(updated)
+    }
+
     setLevel(1)
     setScore(0)
     setQuestionCount(0)
@@ -110,12 +123,15 @@ function Quiz() {
           <Link to="/" className="text-primary-600 font-bold text-xl hover:text-primary-700">
             儿童算数小能手
           </Link>
-          <div className="flex items-center space-x-4">
-            <div className="bg-secondary-100 px-4 py-2 rounded-lg">
-              <span className="text-secondary-700 font-bold">等级 {level}</span>
+          <div className="flex items-center space-x-2">
+            <div className="bg-amber-50 px-3 py-2 rounded-lg" title="历史最高分">
+              <span className="text-amber-600 font-bold text-sm">🏆 {stats.highScore}</span>
             </div>
-            <div className="bg-primary-100 px-4 py-2 rounded-lg">
-              <span className="text-primary-700 font-bold">得分: {score}</span>
+            <div className="bg-secondary-100 px-3 py-2 rounded-lg">
+              <span className="text-secondary-700 font-bold text-sm">Lv.{level}</span>
+            </div>
+            <div className="bg-primary-100 px-3 py-2 rounded-lg">
+              <span className="text-primary-700 font-bold text-sm">{score}分</span>
             </div>
           </div>
         </div>
@@ -133,7 +149,9 @@ function Quiz() {
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-success-500 transition-all duration-300"
-                style={{ width: `${questionCount > 0 ? (correctCount / questionCount) * 100 : 0}%` }}
+                style={{
+                  width: `${questionCount > 0 ? (correctCount / questionCount) * 100 : 0}%`,
+                }}
               />
             </div>
           </div>
@@ -154,13 +172,14 @@ function Quiz() {
                 disabled={selectedAnswer !== null}
                 className={`
                   py-4 px-6 text-2xl font-bold rounded-xl transition-all duration-200
-                  ${selectedAnswer === null
-                    ? 'bg-primary-100 hover:bg-primary-200 text-primary-700 hover:scale-105'
-                    : option === currentQuestion.answer
-                      ? 'bg-success-500 text-white scale-105'
-                      : selectedAnswer === option
-                        ? 'bg-danger-500 text-white'
-                        : 'bg-gray-100 text-gray-400'
+                  ${
+                    selectedAnswer === null
+                      ? 'bg-primary-100 hover:bg-primary-200 text-primary-700 hover:scale-105'
+                      : option === currentQuestion.answer
+                        ? 'bg-success-500 text-white scale-105'
+                        : selectedAnswer === option
+                          ? 'bg-danger-500 text-white'
+                          : 'bg-gray-100 text-gray-400'
                   }
                 `}
               >
@@ -176,9 +195,7 @@ function Quiz() {
                 isCorrect ? 'bg-success-100 text-success-700' : 'bg-danger-100 text-danger-700'
               }`}
             >
-              <p className="text-lg font-bold">
-                {isCorrect ? '回答正确!' : '再接再厉!'}
-              </p>
+              <p className="text-lg font-bold">{isCorrect ? '回答正确!' : '再接再厉!'}</p>
             </div>
           )}
 
@@ -194,8 +211,11 @@ function Quiz() {
 
       {/* Footer */}
       <footer className="bg-white border-t px-4 py-3">
-        <div className="max-w-2xl mx-auto text-center text-sm text-gray-400">
-          答对题目获得积分，每答对 5 题自动升级
+        <div className="max-w-2xl mx-auto flex justify-between items-center text-xs text-gray-500">
+          <span>
+            累计 {stats.totalGames} 局 · {stats.totalQuestions} 题 · 正确率 {getAccuracy(stats)}%
+          </span>
+          <span>答对题目获得积分，每答对 5 题自动升级</span>
         </div>
       </footer>
     </div>

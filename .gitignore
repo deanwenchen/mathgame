@@ -42,3 +42,9 @@ pnpm-debug.log*
 
 # Misc
 *.tsbuildinfo
+
+# Private files
+提示词.txt
+findings.md
+progress.md
+task_plan.md
