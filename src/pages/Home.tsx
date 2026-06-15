@@ -208,6 +208,14 @@ function Home() {
           <Link to="/quiz" className="btn-secondary block w-full text-center">
             答题挑战
           </Link>
+          <a
+            href="https://your-store.lemonsqueezy.com/checkout/custom/PRODUCT_ID"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full text-center py-3 px-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all hover:scale-105 shadow-lg"
+          >
+            ⭐ 升级会员（解锁全部关卡）— $4.99/年
+          </a>
         </div>
       </div>
       <footer className="mt-8 text-sm text-gray-500">适合 6-12 岁儿童使用</footer>
