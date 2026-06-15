@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getQuizStats, getAccuracy, type QuizStats } from '@utils/storage'
-import { getCurrentUser, login, register, logout, saveCurrentUser, loadProgress, saveProgress, type User } from '@utils/api'
+import {
+  getCurrentUser,
+  login,
+  register,
+  logout,
+  saveCurrentUser,
+  loadProgress,
+  saveProgress,
+  type User,
+} from '@utils/api'
 
 function Home() {
   const [stats, setStats] = useState<QuizStats | null>(null)
@@ -19,7 +28,10 @@ function Home() {
 
   const handleAuth = async () => {
     setAuthMsg('')
-    if (!username.trim()) { setAuthMsg('请输入用户名'); return }
+    if (!username.trim()) {
+      setAuthMsg('请输入用户名')
+      return
+    }
     if (authMode === 'register') {
       const res = await register(username, nickname || username)
       if (res.success && res.data?.user) {
@@ -88,13 +100,21 @@ function Home() {
           <div className="mb-4 p-3 bg-blue-50 rounded-xl border border-blue-200">
             <div className="flex items-center justify-between">
               <span className="text-blue-700 font-bold">👤 {user.nickname}</span>
-              <button onClick={handleLogout} className="text-xs text-gray-500 hover:text-red-500">退出</button>
+              <button onClick={handleLogout} className="text-xs text-gray-500 hover:text-red-500">
+                退出
+              </button>
             </div>
             <div className="flex gap-2 mt-2">
-              <button onClick={handleSync} className="flex-1 text-xs py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              <button
+                onClick={handleSync}
+                className="flex-1 text-xs py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
                 ☁️ 上传进度
               </button>
-              <button onClick={handleLoad} className="flex-1 text-xs py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">
+              <button
+                onClick={handleLoad}
+                className="flex-1 text-xs py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              >
                 📥 云端恢复
               </button>
             </div>
@@ -103,20 +123,52 @@ function Home() {
         ) : (
           <div className="mb-4">
             {!showAuth ? (
-              <button onClick={() => setShowAuth(true)} className="text-sm text-blue-600 hover:underline">
+              <button
+                onClick={() => setShowAuth(true)}
+                className="text-sm text-blue-600 hover:underline"
+              >
                 🔑 登录 / 注册（开启云端同步）
               </button>
             ) : (
               <div className="p-3 bg-gray-50 rounded-xl border">
                 <div className="flex gap-2 mb-2">
-                  <button onClick={() => { setAuthMode('login'); setAuthMsg('') }} className={`flex-1 text-xs py-1 rounded ${authMode === 'login' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>登录</button>
-                  <button onClick={() => { setAuthMode('register'); setAuthMsg('') }} className={`flex-1 text-xs py-1 rounded ${authMode === 'register' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>注册</button>
+                  <button
+                    onClick={() => {
+                      setAuthMode('login')
+                      setAuthMsg('')
+                    }}
+                    className={`flex-1 text-xs py-1 rounded ${authMode === 'login' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                  >
+                    登录
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthMode('register')
+                      setAuthMsg('')
+                    }}
+                    className={`flex-1 text-xs py-1 rounded ${authMode === 'register' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                  >
+                    注册
+                  </button>
                 </div>
-                <input value={username} onChange={e => setUsername(e.target.value)} placeholder="用户名" className="w-full mb-2 px-3 py-1 border rounded text-sm" />
+                <input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="用户名"
+                  className="w-full mb-2 px-3 py-1 border rounded text-sm"
+                />
                 {authMode === 'register' && (
-                  <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="昵称（可选）" className="w-full mb-2 px-3 py-1 border rounded text-sm" />
+                  <input
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    placeholder="昵称（可选）"
+                    className="w-full mb-2 px-3 py-1 border rounded text-sm"
+                  />
                 )}
-                <button onClick={handleAuth} className="w-full py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
+                <button
+                  onClick={handleAuth}
+                  className="w-full py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                >
                   {authMode === 'login' ? '登录' : '注册'}
                 </button>
                 {authMsg && <p className="text-xs mt-1 text-gray-600">{authMsg}</p>}
@@ -143,13 +195,19 @@ function Home() {
                 <div className="text-xs text-gray-500">正确率</div>
               </div>
             </div>
-            <div className="mt-2 text-xs text-gray-400">共 {stats.totalGames} 局 · {stats.totalQuestions} 题</div>
+            <div className="mt-2 text-xs text-gray-400">
+              共 {stats.totalGames} 局 · {stats.totalQuestions} 题
+            </div>
           </div>
         )}
 
         <div className="space-y-4">
-          <Link to="/game" className="btn-primary block w-full text-center">开始冒险</Link>
-          <Link to="/quiz" className="btn-secondary block w-full text-center">答题挑战</Link>
+          <Link to="/game" className="btn-primary block w-full text-center">
+            开始冒险
+          </Link>
+          <Link to="/quiz" className="btn-secondary block w-full text-center">
+            答题挑战
+          </Link>
         </div>
       </div>
       <footer className="mt-8 text-sm text-gray-500">适合 6-12 岁儿童使用</footer>
