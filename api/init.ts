@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@vercel/postgres'
 
 export default async function handler(req: any, res: any) {
   try {
@@ -13,10 +13,10 @@ export default async function handler(req: any, res: any) {
         premium_expires_at TIMESTAMP,
         created_at TIMESTAMP DEFAULT NOW()
       )
-    `;
+    `
 
-    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_premium BOOLEAN DEFAULT false`;
-    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS premium_expires_at TIMESTAMP`;
+    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_premium BOOLEAN DEFAULT false`
+    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS premium_expires_at TIMESTAMP`
 
     await sql`
       CREATE TABLE IF NOT EXISTS user_progress (
@@ -30,10 +30,10 @@ export default async function handler(req: any, res: any) {
         updated_at TIMESTAMP DEFAULT NOW(),
         UNIQUE(user_id)
       )
-    `;
+    `
 
-    res.status(200).json({ success: true, message: 'Database tables created' });
+    res.status(200).json({ success: true, message: 'Database tables created' })
   } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message })
   }
 }

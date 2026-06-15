@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { getQuizStats, finishQuizGame, getAccuracy, type QuizStats } from '@utils/storage'
 
 interface Question {
@@ -39,7 +40,6 @@ function generateQuestion(level: number): Question {
       answer = num1 + num2
   }
 
-  // Generate wrong options
   const options: number[] = [answer]
   while (options.length < 4) {
     const wrongAnswer = answer + Math.floor(Math.random() * 20) - 10
@@ -48,12 +48,20 @@ function generateQuestion(level: number): Question {
     }
   }
 
-  return {
-    id: Date.now(),
-    expression,
-    answer,
-    options: options.sort(() => Math.random() - 0.5),
-  }
+  return { id: Date.now(), expression, answer, options: options.sort(() => Math.random() - 0.5) }
+}
+
+const spring = { type: 'spring', stiffness: 300, damping: 20 }
+const popIn = { initial: { scale: 0.8, opacity: 0 }, animate: { scale: 1, opacity: 1, transition: spring } }
+
+// 选项按钮动效配置
+const optionVariants = {
+  idle: { scale: 1 },
+  hover: { scale: 1.04 },
+  tap: { scale: 0.97 },
+  correct: { scale: 1.06, backgroundColor: '#22c55e', color: '#fff' },
+  wrong: { backgroundColor: '#ef4444', color: '#fff' },
+  dim: { backgroundColor: '#f3f4f6', color: '#9ca3af' },
 }
 
 function Quiz() {
@@ -65,157 +73,190 @@ function Quiz() {
   const [questionCount, setQuestionCount] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [stats, setStats] = useState<QuizStats>(() => getQuizStats())
+  const [showLevelUp, setShowLevelUp] = useState(false)
 
   const handleAnswer = (answer: number) => {
     if (selectedAnswer !== null) return
-
     setSelectedAnswer(answer)
     const correct = answer === currentQuestion.answer
     setIsCorrect(correct)
-
     if (correct) {
       setScore((prev) => prev + level * 10)
       setCorrectCount((prev) => prev + 1)
     }
-
-    // Auto advance after 1.5 seconds
     setTimeout(() => {
-      const newQuestionCount = questionCount + 1
-      setQuestionCount(newQuestionCount)
-
-      // Level up every 5 correct answers
+      const newCount = questionCount + 1
+      setQuestionCount(newCount)
+      let newLevel = level
       if (correctCount > 0 && correctCount % 5 === 0) {
-        setLevel((prev) => Math.min(prev + 1, 10))
+        newLevel = Math.min(level + 1, 10)
+        setLevel(newLevel)
+        setShowLevelUp(true)
+        setTimeout(() => setShowLevelUp(false), 2000)
       }
-
-      setCurrentQuestion(generateQuestion(level))
+      setCurrentQuestion(generateQuestion(newLevel))
       setSelectedAnswer(null)
       setIsCorrect(null)
     }, 1500)
   }
 
   const handleRestart = () => {
-    // 结算当局，写入 localStorage
     if (questionCount > 0) {
-      const updated = finishQuizGame({
-        score,
-        level,
-        questions: questionCount,
-        correct: correctCount,
-      })
+      const updated = finishQuizGame({ score, level, questions: questionCount, correct: correctCount })
       setStats(updated)
     }
-
-    setLevel(1)
-    setScore(0)
-    setQuestionCount(0)
-    setCorrectCount(0)
-    setCurrentQuestion(generateQuestion(1))
-    setSelectedAnswer(null)
-    setIsCorrect(null)
+    setLevel(1); setScore(0); setQuestionCount(0); setCorrectCount(0)
+    setCurrentQuestion(generateQuestion(1)); setSelectedAnswer(null); setIsCorrect(null)
   }
 
+  const accuracy = questionCount > 0 ? Math.round((correctCount / questionCount) * 100) : 0
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-amber-50 via-orange-50 to-purple-50 flex flex-col relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-gradient-to-br from-amber-200/20 to-orange-200/20 rounded-full blur-3xl" />
+        <motion.div animate={{ y: [0, -30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/2 -left-20 w-72 h-72 bg-gradient-to-br from-purple-200/20 to-pink-200/20 rounded-full blur-3xl" />
+      </div>
+
       {/* Header */}
-      <header className="bg-white shadow-md px-4 py-3">
+      <header className="relative z-10 bg-white/80 backdrop-blur-sm border-b border-white/50 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <Link to="/" className="text-primary-600 font-bold text-xl hover:text-primary-700">
-            儿童算数小能手
+          <Link to="/" className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500 font-bold text-xl hover:opacity-80 transition-opacity">
+            算数小能手
           </Link>
-          <div className="flex items-center space-x-2">
-            <div className="bg-amber-50 px-3 py-2 rounded-lg" title="历史最高分">
-              <span className="text-amber-600 font-bold text-sm">🏆 {stats.highScore}</span>
-            </div>
-            <div className="bg-secondary-100 px-3 py-2 rounded-lg">
-              <span className="text-secondary-700 font-bold text-sm">Lv.{level}</span>
-            </div>
-            <div className="bg-primary-100 px-3 py-2 rounded-lg">
-              <span className="text-primary-700 font-bold text-sm">{score}分</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-amber-100 px-3 py-1.5 rounded-full flex items-center gap-1" title="历史最高分">
+              <span className="text-amber-600 font-bold text-sm"> {stats.highScore}</span>
+            </motion.div>
+            <motion.div key={level} initial={{ scale: 0.5, y: -10 }} animate={{ scale: 1, y: 0 }} transition={spring}
+              className="bg-purple-100 px-3 py-1.5 rounded-full">
+              <span className="text-purple-700 font-bold text-sm">Lv.{level}</span>
+            </motion.div>
+            <motion.div key={score} initial={{ scale: 1 }} animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.3 }}
+              className="bg-orange-100 px-3 py-1.5 rounded-full">
+              <span className="text-orange-700 font-bold text-sm">{score}分</span>
+            </motion.div>
           </div>
         </div>
       </header>
 
+      {/* 等级提升庆祝 */}
+      <AnimatePresence>
+        {showLevelUp && (
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-3 rounded-full shadow-xl font-bold text-lg">
+            🎉 升级到 Lv.{level}！
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Quiz Content */}
-      <main className="flex-1 flex items-center justify-center p-4">
-        <div className="card max-w-lg w-full">
+      <main className="relative z-10 flex-1 flex items-center justify-center p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={spring}
+          className="max-w-lg w-full bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 shadow-xl p-6 md:p-8 space-y-6">
+
           {/* Progress */}
-          <div className="mb-6">
+          <div>
             <div className="flex justify-between text-sm text-gray-500 mb-2">
-              <span>已答题: {questionCount}</span>
-              <span>正确: {correctCount}</span>
+              <span>已答 <span className="font-bold text-gray-700">{questionCount}</span> 题</span>
+              <span>正确 <span className="font-bold text-green-600">{correctCount}</span> · {accuracy}%</span>
             </div>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-success-500 transition-all duration-300"
-                style={{
-                  width: `${questionCount > 0 ? (correctCount / questionCount) * 100 : 0}%`,
-                }}
+            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${accuracy}%` }}
+                transition={spring}
               />
             </div>
           </div>
 
           {/* Question */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-display text-gray-800 mb-2">
+          <motion.div key={currentQuestion.id} initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={spring}
+            className="text-center py-4">
+            <h2 className="text-4xl md:text-5xl font-display text-gray-800 tracking-tight">
               {currentQuestion.expression}
             </h2>
-          </div>
+          </motion.div>
 
           {/* Options */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {currentQuestion.options.map((option) => (
-              <button
-                key={option}
-                onClick={() => handleAnswer(option)}
-                disabled={selectedAnswer !== null}
-                className={`
-                  py-4 px-6 text-2xl font-bold rounded-xl transition-all duration-200
-                  ${
-                    selectedAnswer === null
-                      ? 'bg-primary-100 hover:bg-primary-200 text-primary-700 hover:scale-105'
-                      : option === currentQuestion.answer
-                        ? 'bg-success-500 text-white scale-105'
-                        : selectedAnswer === option
-                          ? 'bg-danger-500 text-white'
-                          : 'bg-gray-100 text-gray-400'
-                  }
-                `}
-              >
-                {option}
-              </button>
-            ))}
+          <div className="grid grid-cols-2 gap-3">
+            <AnimatePresence mode="popLayout">
+              {currentQuestion.options.map((option, i) => {
+                let variant: string = 'idle'
+                if (selectedAnswer !== null) {
+                  if (option === currentQuestion.answer) variant = 'correct'
+                  else if (option === selectedAnswer) variant = 'wrong'
+                  else variant = 'dim'
+                }
+                return (
+                  <motion.button
+                    key={option}
+                    variants={optionVariants}
+                    initial="idle"
+                    whileHover={selectedAnswer === null ? 'hover' : undefined}
+                    whileTap={selectedAnswer === null ? 'tap' : undefined}
+                    animate={variant}
+                    transition={spring}
+                    onClick={() => handleAnswer(option)}
+                    disabled={selectedAnswer !== null}
+                    className={`
+                      py-4 px-6 text-2xl font-bold rounded-2xl
+                      ${selectedAnswer === null
+                        ? 'bg-white border-2 border-orange-200 text-orange-700 hover:border-orange-400 shadow-sm'
+                        : ''
+                      }
+                    `}
+                    style={variant !== 'idle' ? {} : {}}
+                  >
+                    {option}
+                  </motion.button>
+                )
+              })}
+            </AnimatePresence>
           </div>
 
           {/* Feedback */}
-          {selectedAnswer !== null && (
-            <div
-              className={`text-center py-4 rounded-xl ${
-                isCorrect ? 'bg-success-100 text-success-700' : 'bg-danger-100 text-danger-700'
-              }`}
-            >
-              <p className="text-lg font-bold">{isCorrect ? '回答正确!' : '再接再厉!'}</p>
-            </div>
-          )}
+          <AnimatePresence>
+            {selectedAnswer !== null && (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0, y: 10 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={spring}
+                className={`text-center py-4 rounded-2xl ${
+                  isCorrect
+                    ? 'bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 border border-green-200'
+                    : 'bg-gradient-to-r from-red-50 to-rose-50 text-red-700 border border-red-200'
+                }`}
+              >
+                <p className="text-lg font-bold">
+                  {isCorrect ? ' 回答正确！' : ' 再接再厉！'}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Restart Button */}
-          <button
+          {/* Restart */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleRestart}
-            className="w-full mt-4 py-3 text-gray-500 hover:text-primary-600 transition-colors"
+            className="w-full py-3 text-gray-400 hover:text-orange-500 transition-colors text-sm font-medium"
           >
             重新开始
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t px-4 py-3">
-        <div className="max-w-2xl mx-auto flex justify-between items-center text-xs text-gray-500">
-          <span>
-            累计 {stats.totalGames} 局 · {stats.totalQuestions} 题 · 正确率 {getAccuracy(stats)}%
-          </span>
-          <span>答对题目获得积分，每答对 5 题自动升级</span>
+      <footer className="relative z-10 bg-white/80 backdrop-blur-sm border-t border-white/50 px-4 py-3">
+        <div className="max-w-2xl mx-auto flex justify-between items-center text-xs text-gray-400">
+          <span>累计 {stats.totalGames} 局 · {stats.totalQuestions} 题 · 正确率 {getAccuracy(stats)}%</span>
+          <span>每答对 5 题自动升级</span>
         </div>
       </footer>
     </div>

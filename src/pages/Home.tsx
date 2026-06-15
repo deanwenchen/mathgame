@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { getQuizStats, getAccuracy, type QuizStats } from '@utils/storage'
 import {
   getCurrentUser,
@@ -11,6 +12,14 @@ import {
   saveProgress,
   type User,
 } from '@utils/api'
+
+// Spring 动画配置
+const springTransition = { type: 'spring', stiffness: 300, damping: 20 }
+const staggerContainer = { animate: { transition: { staggerChildren: 0.1 } } }
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: springTransition },
+}
 
 function Home() {
   const [stats, setStats] = useState<QuizStats | null>(null)
@@ -88,137 +97,182 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="card text-center max-w-lg w-full">
-        <h1 className="text-4xl md:text-5xl font-display text-primary-600 mb-2 text-shadow-lg">
-          儿童算数小能手
-        </h1>
-        <p className="text-lg text-gray-600 mb-6">通过有趣的游戏学习数学，成为算数小达人!</p>
+    <div className="min-h-[100dvh] bg-gradient-to-br from-amber-50 via-orange-50 to-purple-50 relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-amber-200/30 to-orange-200/30 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/3 -left-16 w-64 h-64 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-10 right-1/4 w-48 h-48 bg-gradient-to-br from-green-200/20 to-emerald-200/20 rounded-full blur-3xl"
+        />
+      </div>
 
-        {/* 用户状态 */}
-        {user ? (
-          <div className="mb-4 p-3 bg-blue-50 rounded-xl border border-blue-200">
-            <div className="flex items-center justify-between">
-              <span className="text-blue-700 font-bold">👤 {user.nickname}</span>
-              <button onClick={handleLogout} className="text-xs text-gray-500 hover:text-red-500">
-                退出
-              </button>
-            </div>
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={handleSync}
-                className="flex-1 text-xs py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                ☁️ 上传进度
-              </button>
-              <button
-                onClick={handleLoad}
-                className="flex-1 text-xs py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
-              >
-                📥 云端恢复
-              </button>
-            </div>
-            {syncMsg && <p className="text-xs mt-1 text-gray-600">{syncMsg}</p>}
-          </div>
-        ) : (
-          <div className="mb-4">
-            {!showAuth ? (
+      <div className="relative z-10 min-h-[100dvh] flex flex-col items-center justify-center p-6 md:p-8">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="max-w-lg w-full space-y-6"
+        >
+          {/* 标题区 */}
+          <motion.div variants={fadeUp} className="text-center">
+            <motion.h1
+              className="text-5xl md:text-7xl font-display text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-purple-500 mb-3"
+              whileHover={{ scale: 1.02 }}
+              transition={springTransition}
+            >
+              算数小能手
+            </motion.h1>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              通过有趣的游戏学习数学，成为算数小达人！
+            </p>
+          </motion.div>
+
+          {/* 用户状态 */}
+          {user ? (
+            <motion.div
+              variants={fadeUp}
+              className="p-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-white/50 shadow-lg"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-purple-700 font-bold">👤 {user.nickname}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                >
+                  退出
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleSync}
+                  className="flex-1 text-xs py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full hover:shadow-md transition-all active:scale-[0.98]"
+                >
+                  ☁️ 上传进度
+                </button>
+                <button
+                  onClick={handleLoad}
+                  className="flex-1 text-xs py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full hover:shadow-md transition-all active:scale-[0.98]"
+                >
+                  📥 云端恢复
+                </button>
+              </div>
+              {syncMsg && <p className="text-xs mt-2 text-gray-500 text-center">{syncMsg}</p>}
+            </motion.div>
+          ) : !showAuth ? (
+            <motion.div variants={fadeUp} className="text-center">
               <button
                 onClick={() => setShowAuth(true)}
-                className="text-sm text-blue-600 hover:underline"
+                className="text-sm text-purple-600 hover:text-purple-700 underline underline-offset-4 transition-colors"
               >
                 🔑 登录 / 注册（开启云端同步）
               </button>
-            ) : (
-              <div className="p-3 bg-gray-50 rounded-xl border">
-                <div className="flex gap-2 mb-2">
-                  <button
-                    onClick={() => {
-                      setAuthMode('login')
-                      setAuthMsg('')
-                    }}
-                    className={`flex-1 text-xs py-1 rounded ${authMode === 'login' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                  >
-                    登录
-                  </button>
-                  <button
-                    onClick={() => {
-                      setAuthMode('register')
-                      setAuthMsg('')
-                    }}
-                    className={`flex-1 text-xs py-1 rounded ${authMode === 'register' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                  >
-                    注册
-                  </button>
-                </div>
-                <input
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="用户名"
-                  className="w-full mb-2 px-3 py-1 border rounded text-sm"
-                />
-                {authMode === 'register' && (
-                  <input
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                    placeholder="昵称（可选）"
-                    className="w-full mb-2 px-3 py-1 border rounded text-sm"
-                  />
-                )}
+            </motion.div>
+          ) : (
+            <motion.div
+              variants={fadeUp}
+              className="p-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-white/50 shadow-lg space-y-3"
+            >
+              <div className="flex gap-2">
                 <button
-                  onClick={handleAuth}
-                  className="w-full py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                  onClick={() => {
+                    setAuthMode('login')
+                    setAuthMsg('')
+                  }}
+                  className={`flex-1 text-xs py-2 rounded-full transition-all active:scale-[0.98] ${authMode === 'login' ? 'bg-purple-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'}`}
                 >
-                  {authMode === 'login' ? '登录' : '注册'}
+                  登录
                 </button>
-                {authMsg && <p className="text-xs mt-1 text-gray-600">{authMsg}</p>}
+                <button
+                  onClick={() => {
+                    setAuthMode('register')
+                    setAuthMsg('')
+                  }}
+                  className={`flex-1 text-xs py-2 rounded-full transition-all active:scale-[0.98] ${authMode === 'register' ? 'bg-purple-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'}`}
+                >
+                  注册
+                </button>
               </div>
-            )}
-          </div>
-        )}
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="用户名"
+                className="w-full px-4 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+              />
+              {authMode === 'register' && (
+                <input
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  placeholder="昵称（可选）"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                />
+              )}
+              <button
+                onClick={handleAuth}
+                className="w-full py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full text-sm font-bold hover:shadow-lg transition-all active:scale-[0.98]"
+              >
+                {authMode === 'login' ? '登录' : '注册'}
+              </button>
+              {authMsg && <p className="text-xs text-gray-500 text-center">{authMsg}</p>}
+            </motion.div>
+          )}
 
-        {/* 历史战绩卡片 */}
-        {stats && stats.totalGames > 0 && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-amber-50 to-primary-50 rounded-xl border border-amber-200">
-            <h3 className="text-sm font-bold text-amber-700 mb-3">🏆 我的战绩</h3>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div>
-                <div className="text-2xl font-display text-primary-600">{stats.highScore}</div>
-                <div className="text-xs text-gray-500">最高分</div>
+          {/* 战绩卡片 */}
+          {stats && stats.totalGames > 0 && (
+            <motion.div
+              variants={fadeUp}
+              className="p-5 bg-gradient-to-br from-amber-100/80 to-orange-100/80 backdrop-blur-sm rounded-2xl border border-amber-200/50 shadow-lg"
+            >
+              <h3 className="text-sm font-bold text-amber-700 mb-4 text-center"> 我的战绩</h3>
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <motion.div whileHover={{ scale: 1.05 }} transition={springTransition}>
+                  <div className="text-3xl font-display text-amber-600">{stats.highScore}</div>
+                  <div className="text-xs text-gray-500 mt-1">最高分</div>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} transition={springTransition}>
+                  <div className="text-3xl font-display text-purple-600">Lv.{stats.bestLevel}</div>
+                  <div className="text-xs text-gray-500 mt-1">最高等级</div>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} transition={springTransition}>
+                  <div className="text-3xl font-display text-green-600">{getAccuracy(stats)}%</div>
+                  <div className="text-xs text-gray-500 mt-1">正确率</div>
+                </motion.div>
               </div>
-              <div>
-                <div className="text-2xl font-display text-secondary-600">Lv.{stats.bestLevel}</div>
-                <div className="text-xs text-gray-500">最高等级</div>
+              <div className="mt-3 text-xs text-gray-400 text-center">
+                共 {stats.totalGames} 局 · {stats.totalQuestions} 题
               </div>
-              <div>
-                <div className="text-2xl font-display text-success-600">{getAccuracy(stats)}%</div>
-                <div className="text-xs text-gray-500">正确率</div>
-              </div>
-            </div>
-            <div className="mt-2 text-xs text-gray-400">
-              共 {stats.totalGames} 局 · {stats.totalQuestions} 题
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
 
-        <div className="space-y-4">
-          <Link to="/game" className="btn-primary block w-full text-center">
-            开始冒险
-          </Link>
-          <Link to="/quiz" className="btn-secondary block w-full text-center">
-            答题挑战
-          </Link>
-          <a
-            href="https://your-store.lemonsqueezy.com/checkout/custom/PRODUCT_ID"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full text-center py-3 px-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all hover:scale-105 shadow-lg"
-          >
-            ⭐ 升级会员（解锁全部关卡）— $4.99/年
-          </a>
-        </div>
+          {/* 按钮区 */}
+          <motion.div variants={fadeUp} className="space-y-3">
+            <Link
+              to="/quiz"
+              className="block w-full text-center py-4 px-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-full text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] hover:-translate-y-0.5"
+            >
+              🎯 答题挑战
+            </Link>
+            <Link
+              to="/game"
+              className="block w-full text-center py-4 px-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] hover:-translate-y-0.5"
+            >
+              开始冒险
+            </Link>
+          </motion.div>
+        </motion.div>
+
+        <footer className="mt-12 text-sm text-gray-400">适合 6-12 岁儿童使用</footer>
       </div>
-      <footer className="mt-8 text-sm text-gray-500">适合 6-12 岁儿童使用</footer>
     </div>
   )
 }
