@@ -100,3 +100,102 @@ export function getAccuracy(stats: QuizStats): number {
   if (stats.totalQuestions === 0) return 0
   return Math.round((stats.totalCorrect / stats.totalQuestions) * 100)
 }
+
+// ========== 错题本 ==========
+
+export interface MistakeRecord {
+  id: string
+  question: string
+  userAnswer: number
+  correctAnswer: number
+  grade: number
+  type: string
+  knowledgePoint: string
+  timestamp: string
+}
+
+const MISTAKES_KEY = 'mathgame_mistakes'
+
+export function getMistakes(): MistakeRecord[] {
+  try {
+    const raw = localStorage.getItem(MISTAKES_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function addMistake(mistake: Omit<MistakeRecord, 'timestamp'>): void {
+  const mistakes = getMistakes()
+  mistakes.push({ ...mistake, timestamp: new Date().toISOString() })
+  safeWrite(MISTAKES_KEY, mistakes)
+}
+
+export function removeMistake(id: string): void {
+  const mistakes = getMistakes().filter((m) => m.id !== id)
+  safeWrite(MISTAKES_KEY, mistakes)
+}
+
+export function clearMistakes(): void {
+  safeWrite(MISTAKES_KEY, [])
+}
+
+// ========== 每日任务 ==========
+
+export interface DailyTask {
+  date: string
+  questionsCompleted: number
+  targetQuestions: number
+  rewardClaimed: boolean
+}
+
+const DAILY_TASK_KEY = 'mathgame_daily_task'
+
+function getTodayString(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+export function getDailyTask(): DailyTask {
+  try {
+    const raw = localStorage.getItem(DAILY_TASK_KEY)
+    if (!raw)
+      return {
+        date: getTodayString(),
+        questionsCompleted: 0,
+        targetQuestions: 5,
+        rewardClaimed: false,
+      }
+    const task = JSON.parse(raw) as DailyTask
+    if (task.date !== getTodayString()) {
+      const newTask = {
+        date: getTodayString(),
+        questionsCompleted: 0,
+        targetQuestions: 5,
+        rewardClaimed: false,
+      }
+      safeWrite(DAILY_TASK_KEY, newTask)
+      return newTask
+    }
+    return task
+  } catch {
+    return {
+      date: getTodayString(),
+      questionsCompleted: 0,
+      targetQuestions: 5,
+      rewardClaimed: false,
+    }
+  }
+}
+
+export function incrementDailyTask(): DailyTask {
+  const task = getDailyTask()
+  task.questionsCompleted++
+  safeWrite(DAILY_TASK_KEY, task)
+  return task
+}
+
+export function claimDailyReward(): void {
+  const task = getDailyTask()
+  task.rewardClaimed = true
+  safeWrite(DAILY_TASK_KEY, task)
+}

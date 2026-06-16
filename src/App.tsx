@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '@pages/Home'
 import Game from '@pages/Game'
 import Quiz from '@pages/Quiz'
+import MistakeBook from '@pages/MistakeBook'
+import ParentReport from '@pages/ParentReport'
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/game" element={<Game />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/mistakes" element={<MistakeBook />} />
+        <Route path="/report" element={<ParentReport />} />
       </Routes>
     </div>
   )
