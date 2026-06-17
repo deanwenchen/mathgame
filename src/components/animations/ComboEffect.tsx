@@ -6,6 +6,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState, useMemo } from 'react'
+import { useTranslation } from '@/i18n'
 import { DURATION, EASING } from '../../utils/animations'
 
 interface ComboEffectProps {
@@ -20,7 +21,6 @@ interface ComboEffectProps {
 // 连击等级配置
 const COMBO_LEVELS = {
   3: {
-    label: '不错哦!',
     color: 'text-orange-500',
     bgColor: 'bg-orange-100',
     borderColor: 'border-orange-300',
@@ -29,7 +29,6 @@ const COMBO_LEVELS = {
     scale: 1.2,
   },
   5: {
-    label: '太棒了!',
     color: 'text-purple-500',
     bgColor: 'bg-purple-100',
     borderColor: 'border-purple-300',
@@ -38,7 +37,6 @@ const COMBO_LEVELS = {
     scale: 1.3,
   },
   10: {
-    label: '超神!',
     color: 'text-yellow-500',
     bgColor: 'bg-gradient-to-r from-yellow-100 to-orange-100',
     borderColor: 'border-yellow-400',
@@ -114,6 +112,7 @@ function Sparkle({ delay }: { delay: number }) {
 }
 
 export function ComboEffect({ combo, isVisible, onComplete }: ComboEffectProps) {
+  const { t } = useTranslation()
   const [showEffect, setShowEffect] = useState(false)
 
   // 确定连击等级
@@ -211,7 +210,7 @@ export function ComboEffect({ combo, isVisible, onComplete }: ComboEffectProps) 
               transition={{ delay: 0.2 }}
               className={`text-2xl font-bold text-center mt-2 ${config.color}`}
             >
-              连击!
+              {t('combo.label')}!
             </motion.div>
 
             {/* 鼓励文字 */}
@@ -221,7 +220,7 @@ export function ComboEffect({ combo, isVisible, onComplete }: ComboEffectProps) 
               transition={{ delay: 0.3 }}
               className="text-lg font-medium text-center mt-1 text-gray-600"
             >
-              {config.label}
+              {comboLevel === 3 ? t('combo.3') : comboLevel === 5 ? t('combo.5') : t('combo.10')}
             </motion.div>
 
             {/* 粒子效果 */}

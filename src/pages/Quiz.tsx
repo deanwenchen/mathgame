@@ -1,13 +1,27 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useTranslation, i18n } from '@/i18n'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getQuizStats, finishQuizGame, getAccuracy, type QuizStats } from '@utils/storage'
+import {
+  getQuizStats,
+  finishQuizGame,
+  getAccuracy,
+  type QuizStats,
+  checkAndUnlockAchievements,
+  incrementDailyTask,
+  type AchievementDef,
+  getDailyTask,
+  updateKPMastery,
+} from '@utils/storage'
+import { playCorrect, playWrong, playLevelUp, playAchievement } from '@utils/sounds'
 
 interface Question {
   id: number
   expression: string
   answer: number
   options: number[]
+  hint: string
+  type: string // 'add' | 'sub' | 'mul'
 }
 
 function generateQuestion(level: number): Question {
@@ -19,26 +33,33 @@ function generateQuestion(level: number): Question {
 
   let expression: string
   let answer: number
+  let hint: string
 
   switch (operator) {
     case '+':
       expression = `${num1} + ${num2} = ?`
       answer = num1 + num2
+      hint = i18n.t('quiz.hintCounting', { start: num1, n: num2 })
       break
     case '-':
       expression = `${Math.max(num1, num2)} - ${Math.min(num1, num2)} = ?`
       answer = Math.abs(num1 - num2)
+      hint = i18n.t('quiz.hintCountingBack', { start: Math.max(num1, num2), n: Math.min(num1, num2) })
       break
     case '*':
       const smallNum1 = Math.min(num1, 10)
       const smallNum2 = Math.min(num2, 10)
       expression = `${smallNum1} × ${smallNum2} = ?`
       answer = smallNum1 * smallNum2
+      hint = i18n.t('quiz.hintMultiplication', { a: smallNum1, b: smallNum2 })
       break
     default:
       expression = `${num1} + ${num2} = ?`
       answer = num1 + num2
+      hint = i18n.t('quiz.hintCounting', { start: num1, n: num2 })
   }
+
+  const type = operator === '+' ? 'addition' : operator === '-' ? 'subtraction' : 'multiplication'
 
   const options: number[] = [answer]
   while (options.length < 4) {
@@ -48,7 +69,14 @@ function generateQuestion(level: number): Question {
     }
   }
 
-  return { id: Date.now(), expression, answer, options: options.sort(() => Math.random() - 0.5) }
+  return {
+    id: Date.now(),
+    expression,
+    answer,
+    options: options.sort(() => Math.random() - 0.5),
+    hint,
+    type,
+  }
 }
 
 const spring = { type: 'spring', stiffness: 300, damping: 20 }
@@ -68,24 +96,67 @@ const optionVariants = {
 }
 
 function Quiz() {
-  const [level, setLevel] = useState(1)
+  const { t } = useTranslation()
+  const [difficulty, setDifficulty] = useState<'easy' | 'normal' | 'hard'>('normal')
+  const startLevel = difficulty === 'easy' ? 1 : difficulty === 'normal' ? 3 : 6
+  const [level, setLevel] = useState(startLevel)
   const [score, setScore] = useState(0)
-  const [currentQuestion, setCurrentQuestion] = useState<Question>(() => generateQuestion(1))
+  const [currentQuestion, setCurrentQuestion] = useState<Question>(() => generateQuestion(startLevel))
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [questionCount, setQuestionCount] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [stats, setStats] = useState<QuizStats>(() => getQuizStats())
   const [showLevelUp, setShowLevelUp] = useState(false)
+  const streakRef = useRef(0)
+  const [bestStreak, setBestStreak] = useState(0)
+  const [newAchievements, setNewAchievements] = useState<AchievementDef[]>([])
+  const [wrongStreak, setWrongStreak] = useState(0)
+  const [showHint, setShowHint] = useState(false)
+  const [comboText, setComboText] = useState('')
+  const [soundOn, setSoundOn] = useState(() => {
+    try { return localStorage.getItem('mathgame_sound') !== 'off' } catch { return true }
+  })
+
+  const playIfOn = (fn: () => void) => { if (soundOn) fn() }
+
+  // 键盘快捷键：1-4 选择选项
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = parseInt(e.key)
+      if (key >= 1 && key <= 4 && currentQuestion.options[key - 1] !== undefined) {
+        handleAnswer(currentQuestion.options[key - 1])
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [currentQuestion, selectedAnswer])
 
   const handleAnswer = (answer: number) => {
     if (selectedAnswer !== null) return
     setSelectedAnswer(answer)
     const correct = answer === currentQuestion.answer
     setIsCorrect(correct)
+    updateKPMastery(currentQuestion.type, correct)
     if (correct) {
       setScore((prev) => prev + level * 10)
       setCorrectCount((prev) => prev + 1)
+      playIfOn(playCorrect)
+      setWrongStreak(0)
+      setShowHint(false)
+      // 连胜追踪
+      streakRef.current += 1
+      setBestStreak((best) => Math.max(best, streakRef.current))
+      // 连击里程碑提示
+      const s = streakRef.current
+      if (s === 3) { setComboText(t('combo.3')); setTimeout(() => setComboText(''), 1200) }
+      else if (s === 5) { setComboText(t('combo.5')); setScore(p => p + 10); setTimeout(() => setComboText(''), 1200) }
+      else if (s === 10) { setComboText(t('combo.10')); setScore(p => p + 30); setTimeout(() => setComboText(''), 1500) }
+      else if (s > 10 && s % 10 === 0) { setComboText(t('quiz.combo', {count: s})); setTimeout(() => setComboText(''), 1200) }
+    } else {
+      playIfOn(playWrong)
+      setWrongStreak((prev) => prev + 1)
+      streakRef.current = 0
     }
     setTimeout(() => {
       const newCount = questionCount + 1
@@ -95,6 +166,7 @@ function Quiz() {
         newLevel = Math.min(level + 1, 10)
         setLevel(newLevel)
         setShowLevelUp(true)
+        playIfOn(playLevelUp)
         setTimeout(() => setShowLevelUp(false), 2000)
       }
       setCurrentQuestion(generateQuestion(newLevel))
@@ -112,12 +184,32 @@ function Quiz() {
         correct: correctCount,
       })
       setStats(updated)
+
+      // 成就检测
+      const accuracy = questionCount > 0 ? Math.round((correctCount / questionCount) * 100) : 0
+      const unlocked = checkAndUnlockAchievements({
+        score,
+        accuracy,
+        totalQuestions: questionCount,
+        streak: bestStreak,
+      })
+      if (unlocked.length > 0) {
+        setNewAchievements(unlocked)
+        playIfOn(playAchievement)
+      }
+
+      // 每日任务递增（按本局答对题数递增）
+      for (let n = 0; n < correctCount; n++) {
+        incrementDailyTask()
+      }
     }
-    setLevel(1)
+    setLevel(startLevel)
     setScore(0)
     setQuestionCount(0)
     setCorrectCount(0)
-    setCurrentQuestion(generateQuestion(1))
+    streakRef.current = 0
+    setBestStreak(0)
+    setCurrentQuestion(generateQuestion(startLevel))
     setSelectedAnswer(null)
     setIsCorrect(null)
   }
@@ -147,14 +239,40 @@ function Quiz() {
             to="/"
             className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500 font-bold text-xl hover:opacity-80 transition-opacity"
           >
-            算数小能手
+            {t('home.title')}
           </Link>
           <div className="flex items-center gap-2">
+            {/* 音效开关 */}
+            <button
+              onClick={() => {
+                const next = !soundOn
+                setSoundOn(next)
+                try { localStorage.setItem('mathgame_sound', next ? 'on' : 'off') } catch {}
+              }}
+              className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm hover:bg-gray-200 transition-colors"
+              title={soundOn ? t('quiz.soundOff') : t('quiz.soundOn')}
+            >
+              {soundOn ? '🔊' : '🔇'}
+            </button>
+            {/* 难度选择 */}
+            <div className="flex gap-0.5 bg-gray-100 rounded-full p-0.5">
+              {(['easy', 'normal', 'hard'] as const).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => { setDifficulty(d); setLevel(d === 'easy' ? 1 : d === 'normal' ? 3 : 6) }}
+                  className={`text-[10px] px-2 py-1 rounded-full transition-all ${
+                    difficulty === d ? 'bg-white shadow-sm font-bold text-gray-800' : 'text-gray-400'
+                  }`}
+                >
+                  {d === 'easy' ? t('quiz.easy') : d === 'normal' ? t('quiz.medium') : t('quiz.hard')}
+                </button>
+              ))}
+            </div>
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               className="bg-amber-100 px-3 py-1.5 rounded-full flex items-center gap-1"
-              title="历史最高分"
+              title={t('home.stats.highScore')}
             >
               <span className="text-amber-600 font-bold text-sm"> {stats.highScore}</span>
             </motion.div>
@@ -174,7 +292,7 @@ function Quiz() {
               transition={{ duration: 0.3 }}
               className="bg-orange-100 px-3 py-1.5 rounded-full"
             >
-              <span className="text-orange-700 font-bold text-sm">{score}分</span>
+              <span className="text-orange-700 font-bold text-sm">{score} pts</span>
             </motion.div>
           </div>
         </div>
@@ -189,7 +307,82 @@ function Quiz() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-3 rounded-full shadow-xl font-bold text-lg"
           >
-            🎉 升级到 Lv.{level}！
+            🎉 {t('feedback.levelUp')} Lv.{level}!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 连击提示 */}
+      <AnimatePresence>
+        {comboText && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed top-32 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-2 rounded-full shadow-xl font-bold text-base"
+          >
+            {comboText}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 成就解锁弹窗 */}
+      <AnimatePresence>
+        {newAchievements.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setNewAchievements([])}
+          >
+            <motion.div
+              initial={{ scale: 0.7, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={spring}
+              className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-5xl mb-3">🏅</div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                {newAchievements.length === 1
+                  ? t('achievement.unlocked')
+                  : `${newAchievements.length} ${t('achievement.unlocked')}`}
+              </h2>
+              <div className="space-y-2 mb-4">
+                {newAchievements.map((a) => (
+                  <motion.div
+                    key={a.id}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ ...spring, delay: 0.1 }}
+                    className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3"
+                  >
+                    <span className="text-3xl">{a.icon}</span>
+                    <div className="text-left">
+                      <div className="font-bold text-amber-700 text-sm">{a.name}</div>
+                      <div className="text-xs text-gray-500">{a.description}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setNewAchievements([])}
+                  className="flex-1 py-2.5 bg-gray-100 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                >
+                  {t('common.close')}
+                </button>
+                <Link
+                  to="/achievements"
+                  onClick={() => setNewAchievements([])}
+                  className="flex-1 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-sm font-bold hover:shadow-lg transition-all"
+                >
+                  {t('achievement.title')}
+                </Link>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -206,10 +399,10 @@ function Quiz() {
           <div>
             <div className="flex justify-between text-sm text-gray-500 mb-2">
               <span>
-                已答 <span className="font-bold text-gray-700">{questionCount}</span> 题
+                {t('quiz.question')} <span className="font-bold text-gray-700">{questionCount}</span>
               </span>
               <span>
-                正确 <span className="font-bold text-green-600">{correctCount}</span> · {accuracy}%
+                {t('quiz.correct')} <span className="font-bold text-green-600">{correctCount}</span> · {accuracy}%
               </span>
             </div>
             <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
@@ -287,20 +480,56 @@ function Quiz() {
                     : 'bg-gradient-to-r from-red-50 to-rose-50 text-red-700 border border-red-200'
                 }`}
               >
-                <p className="text-lg font-bold">{isCorrect ? ' 回答正确！' : ' 再接再厉！'}</p>
+                <p className="text-lg font-bold">{isCorrect ? t('feedback.great') : t('feedback.tryAgain')}</p>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Restart */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleRestart}
-            className="w-full py-3 text-gray-400 hover:text-orange-500 transition-colors text-sm font-medium"
-          >
-            重新开始
-          </motion.button>
+          {/* 提示按钮（连续答错 2 题后显示） */}
+          {wrongStreak >= 2 && !showHint && (
+            <motion.button
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowHint(true)}
+              className="w-full py-3 bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 font-bold rounded-2xl border border-blue-200 hover:shadow-md transition-all"
+            >
+              {t('quiz.hint')}
+            </motion.button>
+          )}
+          {showHint && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-center"
+            >
+              <p className="text-blue-700 text-sm">💡 {currentQuestion.hint}</p>
+            </motion.div>
+          )}
+
+          {/* Restart & Share */}
+          <div className="flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                const text = `🎯 ${t('home.title')}: ${t('quiz.correct')} ${correctCount}, ${t('quiz.score')} ${score}!`
+                if (navigator.share) navigator.share({ title: t('home.title'), text })
+                else { navigator.clipboard.writeText(text); alert(t('common.confirm')) }
+              }}
+              className="flex-1 py-3 bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 font-bold rounded-full text-sm hover:shadow-md transition-all"
+            >
+              {t('quiz.share')}
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleRestart}
+              className="flex-1 py-3 text-gray-400 hover:text-orange-500 transition-colors text-sm font-medium"
+            >
+              {t('quiz.playAgain')}
+            </motion.button>
+          </div>
         </motion.div>
       </main>
 
@@ -308,9 +537,12 @@ function Quiz() {
       <footer className="relative z-10 bg-white/80 backdrop-blur-sm border-t border-white/50 px-4 py-3">
         <div className="max-w-2xl mx-auto flex justify-between items-center text-xs text-gray-400">
           <span>
-            累计 {stats.totalGames} 局 · {stats.totalQuestions} 题 · 正确率 {getAccuracy(stats)}%
+            {t('home.stats.summary', {games: stats.totalGames, questions: stats.totalQuestions})} · {t('home.stats.accuracy')} {getAccuracy(stats)}%
           </span>
-          <span>每答对 5 题自动升级</span>
+          <span className="text-green-600">
+            {t('home.daily.todayGoal')} {getDailyTask().questionsCompleted}/{getDailyTask().targetQuestions}
+          </span>
+          <span>{t('feedback.levelUp')}</span>
         </div>
       </footer>
     </div>

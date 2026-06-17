@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap declaration helps Google discover all language variants
+Sitemap: https://math-game.lazytoolshub.top/sitemap.xml

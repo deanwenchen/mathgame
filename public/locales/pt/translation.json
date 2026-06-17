@@ -1,0 +1,394 @@
+{
+  "home": {
+    "title": "Mágico da Matemática",
+    "subtitle": "Aprenda matemática brincando — torne-se um mestre dos números!",
+    "streak": "Sequência de estudos: {{count}} dias",
+    "darkMode": "Modo Protege Olhos",
+    "lightMode": "Modo Claro",
+    "footer": "Idades 6–12",
+    "theme": {
+      "default": "Padrão",
+      "ocean": "Oceano",
+      "forest": "Floresta",
+      "candy": "Doces"
+    },
+    "auth": {
+      "login": "Entrar",
+      "register": "Cadastrar",
+      "username": "Nome de usuário",
+      "nickname": "Apelido (opcional)",
+      "loginRegister": "Entrar / Cadastrar (Sincronização na Nuvem)",
+      "logout": "Sair",
+      "upload": "Enviar Progresso",
+      "restore": "Restaurar da Nuvem",
+      "syncing": "Sincronizando...",
+      "synced": "✅ Sincronizado na nuvem",
+      "loading": "Carregando...",
+      "cloudData": "Dados na nuvem",
+      "noCloudData": "❌ Nenhum dado encontrado na nuvem",
+      "loginSuccess": "Login realizado com sucesso!",
+      "registerSuccess": "Cadastro realizado com sucesso!",
+      "loginFailed": "Falha no login",
+      "registerFailed": "Falha no cadastro",
+      "usernameRequired": "Por favor, digite um nome de usuário"
+    },
+    "stats": {
+      "title": "Minhas Estatísticas",
+      "highScore": "Maior Pontuação",
+      "bestLevel": "Melhor Fase",
+      "accuracy": "Precisão",
+      "summary": "{{games}} partidas · {{questions}} perguntas",
+      "games": "partidas"
+    },
+    "achievements": {
+      "recent": "Conquistas Recentes",
+      "viewAll": "Ver Todas",
+      "unlocked": "{{count}} / {{total}} conquistas desbloqueadas"
+    },
+    "daily": {
+      "title": "Missão Diária",
+      "claimed": "Resgatado",
+      "claimReward": "Resgatar Recompensa",
+      "todayGoal": "Meta de Hoje",
+      "goalReached": "🎉 Meta atingida! Vá resgatar sua recompensa!",
+      "keepGoing": "Faltam {{remaining}} perguntas — continue assim!"
+    },
+    "nav": {
+      "quiz": "Desafio Quiz",
+      "startAdventure": "Iniciar Aventura",
+      "timedChallenge": "Desafio Cronometrado",
+      "adventure": "Aventura",
+      "survival": "Sobrevivência",
+      "precision": "Precisão",
+      "mistakes": "Erros",
+      "achievements": "Conquistas",
+      "leaderboard": "Ranking",
+      "challenge": "Desafio",
+      "parent": "Pais",
+      "report": "Relatório"
+    }
+  },
+  "quiz": {
+    "score": "Pontuação",
+    "question": "Pergunta",
+    "of": "de",
+    "timeLeft": "Tempo Restante",
+    "checkAnswer": "Conferir Resposta",
+    "nextQuestion": "Próxima Pergunta",
+    "correct": "✅ Correto!",
+    "wrong": "❌ Errado! A resposta é {{answer}}",
+    "coinsEarned": "+{{amount}} moedas!",
+    "combo": "Combo ×{{count}}",
+    "comboBonus": "Combo ×{{count}}! Dano +{{percent}}%",
+    "level": "Fase {{level}}",
+    "hint": "💡 Dica",
+    "soundOn": "Som: LIGADO",
+    "soundOff": "Som: DESLIGADO",
+    "easy": "Fácil",
+    "medium": "Médio",
+    "hard": "Difícil",
+    "gameOver": "Fim de Jogo!",
+    "finalScore": "Pontuação Final",
+    "correctRate": "Taxa de Acerto",
+    "timeSpent": "Tempo Gasto",
+    "coins": "Moedas",
+    "playAgain": "Jogar de Novo",
+    "share": "Compartilhar",
+    "back": "Voltar",
+    "streakBonus": "🔥 {{count}} seguidas! Dano +{{percent}}%",
+    "hintCounting": "Try counting {{n}} numbers forward from {{start}}",
+    "hintCountingBack": "Try counting {{n}} numbers back from {{start}}",
+    "hintMultiplication": "{{a}} groups of {{b}}, what's the total?"
+  },
+  "adventure": {
+    "level": "Fase",
+    "reward": "Recompensa",
+    "start": "Iniciar",
+    "completed": "Concluído ✅",
+    "locked": "🔒 Bloqueado",
+    "congrats": "🎉 Fase Completa!",
+    "totalScore": "Pontuação Total"
+  },
+  "survival": {
+    "lives": "Vidas",
+    "gameOver": "💀 Fim de Jogo!",
+    "score": "Pontuação",
+    "correct": "✅ Correto!",
+    "wrong": "❌ Errado! -1 vida"
+  },
+  "precision": {
+    "title": "Modo Precisão",
+    "gameOver": "❌ Fim de Jogo! Um erro e você está fora!",
+    "score": "Pontuação",
+    "correct": "✅ Correto!",
+    "wrong": "❌ Errado!"
+  },
+  "mistakes": {
+    "title": "Caderno de Erros",
+    "noMistakes": "Nenhum erro ainda! 🎉",
+    "practice": "Praticar",
+    "search": "Buscar perguntas ou temas",
+    "all": "Todos",
+    "weakPoints": "Pontos Fracos",
+    "mastery": "Domínio: {{value}}%",
+    "practiceTitle": "Prática de Erros",
+    "complete": "Prática Completa!",
+    "correctCount": "Corretas: {{count}}",
+    "wrongCount": "Erradas: {{count}}",
+    "accuracy": "Precisão: {{value}}%",
+    "back": "Voltar",
+    "next": "Próximo",
+    "answer": "Resposta",
+    " mastered": "✅ Dominado!",
+    "stillLearning": "📝 Ainda aprendendo"
+  },
+  "achievement": {
+    "title": "Mural de Conquistas",
+    "unlocked": "Desbloqueada",
+    "locked": "Bloqueada",
+    "share": "Compartilhar",
+    "shared": "Compartilhado!",
+    "back": "Voltar"
+  },
+  "leaderboard": {
+    "title": "Ranking",
+    "rank": "Posição",
+    "score": "Pontuação",
+    "level": "Fase",
+    "noRecords": "Nenhum registro ainda",
+    "back": "Voltar"
+  },
+  "parent": {
+    "title": "Controle dos Pais",
+    "enterPin": "Digite o PIN",
+    "confirm": "Confirmar",
+    "wrongPin": "PIN incorreto",
+    "enable": "Ativar Controle dos Pais",
+    "setPin": "Definir PIN",
+    "newPin": "Digite um novo PIN de 4 dígitos",
+    "confirmPin": "Confirmar PIN",
+    "pinMismatch": "Os PINs não coincidem",
+    "saveSettings": "Salvar Configurações",
+    "dailyLimit": "Limite de Uso Diário",
+    "minutes": "minutos",
+    "timeRestrict": "Restrição de Horário de Uso",
+    "startTime": "Horário de Início",
+    "endTime": "Horário de Término",
+    "saved": "✅ Configurações salvas",
+    "back": "Voltar"
+  },
+  "report": {
+    "title": "Relatório de Aprendizado",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "studyTime": "Tempo de Estudo",
+    "accuracyTrend": "Tendência de Precisão",
+    "weakPoints": "Pontos Fracos",
+    "compare": "Comparação com Outros",
+    "minutes": "minutos"
+  },
+  "timed": {
+    "title": "Desafio Cronometrado",
+    "selectDuration": "Escolher Duração",
+    "start": "Iniciar",
+    "timeUp": "⏰ Tempo Esgotado!",
+    "score": "Pontuação",
+    "back": "Voltar",
+    "share": "Compartilhar"
+  },
+  "game": {
+    "loading": "Carregando...",
+    "back": "Voltar",
+    "monsters": {
+      "slime": "Slime",
+      "goblin": "Goblin",
+      "skeleton": "Skeleton",
+      "shadowWolf": "Shadow Wolf",
+      "gargoyle": "Gargoyle",
+      "fireElemental": "Fire Elemental",
+      "frostGiant": "Frost Giant",
+      "poisonDragon": "Poison Dragon"
+    },
+    "log": {
+      "appeared": "{{emoji}} {{name}} appeared!",
+      "stageAppeared": "Stage {{n}}! {{emoji}} {{name}} appeared!",
+      "correct": "Correct! Dealt {{dmg}} damage{{combo}}",
+      "comboBonus": " ({{n}}-combo!)",
+      "defeated": "{{emoji}} {{name}} defeated! +{{xp}}XP +{{coins}} coins",
+      "playerHit": "{{emoji}} took {{dmg}} damage!",
+      "playerDefeated": "{{emoji}} You were defeated...",
+      "levelUp": "Level Up! Lv.{{lv}}! HP={{hp}}",
+      "wrongHit": "Wrong! Hit for -{{dmg}} HP"
+    },
+    "grade": "Grade {{n}}",
+    "stage": "Stage {{n}}"
+  },
+  "dailyChallenge": {
+    "title": "Desafio do Dia",
+    "completed": "Concluído ✅",
+    "notCompleted": "Não Concluído",
+    "reward": "Recompensa: 50 moedas",
+    "start": "Iniciar Desafio"
+  },
+  "engine": {
+    "knowledge": {
+      "add10": "Soma até 10",
+      "sub10": "Subtração até 10",
+      "add20": "Soma até 20",
+      "sub20": "Subtração até 20",
+      "add100": "Soma até 100",
+      "sub100": "Subtração até 100",
+      "mul": "Multiplicação",
+      "div": "Divisão",
+      "fracAdd": "Soma de frações",
+      "fracSub": "Subtração de frações",
+      "fracMul": "Multiplicação de frações",
+      "fracDiv": "Divisão de frações",
+      "decMul": "Multiplicação de decimais",
+      "decDiv": "Divisão de decimais",
+      "percent": "Porcentagem",
+      "ratio": "Proporção",
+      "area": "Área",
+      "compare": "Comparação",
+      "add10000": "Addition within 10000",
+      "multiDigitMul1": "Multi-digit times one digit",
+      "fracIntro": "Introduction to fractions",
+      "multiDigitMulDiv": "Multi-digit multiplication and division",
+      "decimalOps": "Decimal operations",
+      "simpleEq": "Simple equations",
+      "fracFourOps": "Fraction four operations",
+      "decimalMulDiv": "Decimal multiplication and division",
+      "basicStats": "Basic statistics",
+      "fracDecPct": "Fractions, decimals, and percentages",
+      "circleArea": "Circle circumference and area",
+      "wordProblem": "Word problems"
+    },
+    "names": [
+      "Pedro",
+      "Ana",
+      "Lucas",
+      "Julia",
+      "Rafa"
+    ],
+    "items": [
+      "maçãs",
+      "lápis",
+      "borrachas",
+      "balas",
+      "balões"
+    ],
+    "templates": {
+      "buyMore": "{{name}} tem {{a}} {{item}} e comprou {{b}} a mais. Quantos tem no total?",
+      "giveAway": "{{name}} tem {{a}} {{item}} e deu {{b}}. Quantos sobraram?",
+      "share": "{{name}} tem {{total}} {{item}} divididos entre {{people}} pessoas. Quantos cada um recebe?"
+    },
+    "hint": {
+      "tryCount": "Tentativa #{{count}} — pense bem!",
+      "addition": "Dica: Tente contar a partir do número maior",
+      "subtraction": "Dica: Tente contar de trás pra frente",
+      "multiplication": "Dica: Lembre-se da tabuada"
+    }
+  },
+  "feedback": {
+    "great": "Muito bem! Continue assim!",
+    "tryAgain": "Tudo bem, tente de novo!",
+    "levelUp": "Subiu de Fase!",
+    "congrats": "Parabéns por subir de fase!",
+    "keepGoing": "Continue em Frente!"
+  },
+  "levelTitles": [
+    "Iniciante",
+    "Explorador de Números",
+    "Aprendiz de Soma",
+    "Estrela da Subtração",
+    "Mágico da Matemática",
+    "Profissional dos Cálculos",
+    "Mestre dos Números",
+    "Gênio da Matemática",
+    "Professor de Matemática",
+    "Rei da Matemática"
+  ],
+  "achievements": {
+    "first_win": {
+      "name": "First Steps",
+      "desc": "Complete your first game"
+    },
+    "score_100": {
+      "name": "Rising Star",
+      "desc": "Score 100 in a single game"
+    },
+    "score_500": {
+      "name": "Math Star",
+      "desc": "Score 500 in a single game"
+    },
+    "score_1000": {
+      "name": "Math Hero",
+      "desc": "Score 1000 in a single game"
+    },
+    "accuracy_90": {
+      "name": "Sharpshooter",
+      "desc": "Reach 90% accuracy"
+    },
+    "accuracy_100": {
+      "name": "Perfectionist",
+      "desc": "100% accuracy in a game (≥10 questions)"
+    },
+    "games_10": {
+      "name": "Keep Learning",
+      "desc": "Complete 10 games"
+    },
+    "questions_50": {
+      "name": "Hard Worker",
+      "desc": "Answer 50 questions correctly"
+    },
+    "questions_200": {
+      "name": "Question Master",
+      "desc": "Answer 200 questions correctly"
+    },
+    "streak_10": {
+      "name": "10-Streak",
+      "desc": "Get 10 correct answers in a row"
+    },
+    "games_50": {
+      "name": "Scholar's Path",
+      "desc": "Complete 50 games"
+    },
+    "timed_30": {
+      "name": "Flash",
+      "desc": "Answer 30 questions in timed challenge"
+    },
+    "streak_days_7": {
+      "name": "Weekly Warrior",
+      "desc": "Learn 7 days in a row"
+    },
+    "score_2000": {
+      "name": "Math King",
+      "desc": "Score 2000 in a single game"
+    },
+    "games_100": {
+      "name": "Century Player",
+      "desc": "Complete 100 games"
+    },
+    "streak_20": {
+      "name": "20-Streak",
+      "desc": "Get 20 correct answers in a row"
+    }
+  },
+  "combo": {
+    "3": "Boa!",
+    "5": "Incrível!",
+    "10": "DIVINO!",
+    "label": "COMBO"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "back": "Voltar",
+    "share": "Compartilhar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "close": "Fechar",
+    "reset": "Reiniciar",
+    "coins": "moedas"
+  }
+}

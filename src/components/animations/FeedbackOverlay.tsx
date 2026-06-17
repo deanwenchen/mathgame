@@ -5,6 +5,7 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from '@/i18n'
 import { DURATION, EASING, FEEDBACK_COLORS } from '../../utils/animations'
 
 interface FeedbackOverlayProps {
@@ -41,6 +42,7 @@ export function FeedbackOverlay({
   autoCloseDelay = 1500,
   onClose,
 }: FeedbackOverlayProps) {
+  const { t } = useTranslation()
   // 根据正确/错误获取样式配置
   const feedbackStyle = isCorrect ? FEEDBACK_COLORS.correct : FEEDBACK_COLORS.incorrect
 
@@ -158,7 +160,7 @@ export function FeedbackOverlay({
               animate="animate"
               className="text-8xl mb-6"
               role="img"
-              aria-label={isCorrect ? '庆祝' : '加油'}
+              aria-label={isCorrect ? t('feedback.great') : t('feedback.tryAgain')}
             >
               {isCorrect ? '\u{1F389}' : '\u{1F4AA}'}
             </motion.div>
@@ -180,7 +182,7 @@ export function FeedbackOverlay({
               transition={{ delay: 0.4, duration: DURATION.normal }}
               className="text-xl md:text-2xl text-white/90 font-medium"
             >
-              {isCorrect ? '太棒了！继续保持！' : '没关系，再试一次！'}
+              {isCorrect ? t('feedback.great') : t('feedback.tryAgain')}
             </motion.p>
 
             {/* 装饰性星星动画（仅正确答案） */}

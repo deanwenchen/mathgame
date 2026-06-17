@@ -1,0 +1,394 @@
+{
+  "home": {
+    "title": "ساحر الرياضيات",
+    "subtitle": "تعلّم الرياضيات بمرح — واصب بطلاً للأرقام!",
+    "streak": "سلسلة التعلّم: {{count}} أيام",
+    "darkMode": "وضع حماية العين",
+    "lightMode": "الوضع الفاتح",
+    "footer": "للأعمار 6–12",
+    "theme": {
+      "default": "افتراضي",
+      "ocean": "محيط",
+      "forest": "غابة",
+      "candy": "حلويات"
+    },
+    "auth": {
+      "login": "تسجيل الدخول",
+      "register": "إنشاء حساب",
+      "username": "اسم المستخدم",
+      "nickname": "اللقب (اختياري)",
+      "loginRegister": "تسجيل الدخول / إنشاء حساب (مزامنة سحابية)",
+      "logout": "تسجيل الخروج",
+      "upload": "رفع التقدّم",
+      "restore": "استعادة من السحابة",
+      "syncing": "جارٍ المزامنة...",
+      "synced": "✅ تمت المزامنة مع السحابة",
+      "loading": "جارٍ التحميل...",
+      "cloudData": "بيانات السحابة",
+      "noCloudData": "❌ لم يتم العثور على بيانات في السحابة",
+      "loginSuccess": "تم تسجيل الدخول بنجاح!",
+      "registerSuccess": "تم إنشاء الحساب بنجاح!",
+      "loginFailed": "فشل تسجيل الدخول",
+      "registerFailed": "فشل إنشاء الحساب",
+      "usernameRequired": "يرجى إدخال اسم المستخدم"
+    },
+    "stats": {
+      "title": "إحصائياتي",
+      "highScore": "أعلى نتيجة",
+      "bestLevel": "أفضل مستوى",
+      "accuracy": "الدقّة",
+      "summary": "{{games}} ألعاب · {{questions}} أسئلة",
+      "games": "ألعاب"
+    },
+    "achievements": {
+      "recent": "الإنجازات الأخيرة",
+      "viewAll": "عرض الكل",
+      "unlocked": "تم فتح {{count}} / {{total}} من الإنجازات"
+    },
+    "daily": {
+      "title": "المهمّة اليومية",
+      "claimed": "تم الاستلام",
+      "claimReward": "استلام المكافأة",
+      "todayGoal": "هدف اليوم",
+      "goalReached": "🎉 تم تحقيق الهدف! اذهب لاستلام مكافأتك!",
+      "keepGoing": "باقي {{remaining}} أسئلة — واصل التقدّم!"
+    },
+    "nav": {
+      "quiz": "تحدي الأسئلة",
+      "startAdventure": "ابدأ المغامرة",
+      "timedChallenge": "تحدي الوقت",
+      "adventure": "مغامرة",
+      "survival": "بقاء",
+      "precision": "دقّة",
+      "mistakes": "الأخطاء",
+      "achievements": "الإنجازات",
+      "leaderboard": "الترتيب",
+      "challenge": "تحدي",
+      "parent": "الوالدان",
+      "report": "تقرير"
+    }
+  },
+  "quiz": {
+    "score": "النقاط",
+    "question": "سؤال",
+    "of": "من",
+    "timeLeft": "الوقت المتبقي",
+    "checkAnswer": "تحقّق من الإجابة",
+    "nextQuestion": "السؤال التالي",
+    "correct": "✅ إجابة صحيحة!",
+    "wrong": "❌ إجابة خاطئة! الإجابة الصحيحة هي {{answer}}",
+    "coinsEarned": "+{{amount}} عملة!",
+    "combo": "كومبو ×{{count}}",
+    "comboBonus": "كومبو ×{{count}}! الضرر +{{percent}}%",
+    "level": "المستوى {{level}}",
+    "hint": "💡 تلميح",
+    "soundOn": "الصوت: مُفعَّل",
+    "soundOff": "الصوت: مُعطَّل",
+    "easy": "سهل",
+    "medium": "متوسط",
+    "hard": "صعب",
+    "gameOver": "انتهت اللعبة!",
+    "finalScore": "النتيجة النهائية",
+    "correctRate": "نسبة الصحّة",
+    "timeSpent": "الوقت المستغرق",
+    "coins": "العملات",
+    "playAgain": "العب مجددًا",
+    "share": "مشاركة",
+    "back": "رجوع",
+    "streakBonus": "🔥 {{count}} إجابات متتالية! الضرر +{{percent}}%",
+    "hintCounting": "Try counting {{n}} numbers forward from {{start}}",
+    "hintCountingBack": "Try counting {{n}} numbers back from {{start}}",
+    "hintMultiplication": "{{a}} groups of {{b}}, what's the total?"
+  },
+  "adventure": {
+    "level": "المستوى",
+    "reward": "المكافأة",
+    "start": "ابدأ",
+    "completed": "مكتمل ✅",
+    "locked": "🔒 مُقفل",
+    "congrats": "🎉 تم اجتياز المستوى!",
+    "totalScore": "مجموع النقاط"
+  },
+  "survival": {
+    "lives": "الأرواح",
+    "gameOver": "💀 انتهت اللعبة!",
+    "score": "النقاط",
+    "correct": "✅ إجابة صحيحة!",
+    "wrong": "❌ إجابة خاطئة! -1 روح"
+  },
+  "precision": {
+    "title": "وضع الدقّة",
+    "gameOver": "❌ انتهت اللعبة! خطأ واحد وتخرج!",
+    "score": "النقاط",
+    "correct": "✅ إجابة صحيحة!",
+    "wrong": "❌ إجابة خاطئة!"
+  },
+  "mistakes": {
+    "title": "دفتر الأخطاء",
+    "noMistakes": "لا أخطاء بعد! 🎉",
+    "practice": "تدرّب",
+    "search": "ابحث عن أسئلة أو مواضيع",
+    "all": "الكل",
+    "weakPoints": "نقاط الضعف",
+    "mastery": "الإتقان: {{value}}%",
+    "practiceTitle": "تمرين الأخطاء",
+    "complete": "اكتمل التمرين!",
+    "correctCount": "صحيحة: {{count}}",
+    "wrongCount": "خاطئة: {{count}}",
+    "accuracy": "الدقّة: {{value}}%",
+    "back": "رجوع",
+    "next": "التالي",
+    "answer": "الإجابة",
+    " mastered": "✅ تم الإتقان!",
+    "stillLearning": "📝 لا تزال تتعلّم"
+  },
+  "achievement": {
+    "title": "جدار الإنجازات",
+    "unlocked": "مفتوح",
+    "locked": "مُقفل",
+    "share": "مشاركة",
+    "shared": "تمت المشاركة!",
+    "back": "رجوع"
+  },
+  "leaderboard": {
+    "title": "لوحة الترتيب",
+    "rank": "الترتيب",
+    "score": "النقاط",
+    "level": "المستوى",
+    "noRecords": "لا سجلات بعد",
+    "back": "رجوع"
+  },
+  "parent": {
+    "title": "رقابة الوالدين",
+    "enterPin": "أدخل الرمز السري",
+    "confirm": "تأكيد",
+    "wrongPin": "الرمز السري غير صحيح",
+    "enable": "تفعيل رقابة الوالدين",
+    "setPin": "تعيين الرمز السري",
+    "newPin": "أدخل رمزًا سريًا جديدًا من 4 أرقام",
+    "confirmPin": "أكّد الرمز السري",
+    "pinMismatch": "الرموز السرية غير متطابقة",
+    "saveSettings": "حفظ الإعدادات",
+    "dailyLimit": "حدّ الاستخدام اليومي",
+    "minutes": "دقائق",
+    "timeRestrict": "قيود وقت الاستخدام",
+    "startTime": "وقت البدء",
+    "endTime": "وقت الانتهاء",
+    "saved": "✅ تم حفظ الإعدادات",
+    "back": "رجوع"
+  },
+  "report": {
+    "title": "تقرير التعلّم",
+    "weekly": "أسبوعي",
+    "monthly": "شهري",
+    "studyTime": "وقت الدراسة",
+    "accuracyTrend": "اتجاه الدقّة",
+    "weakPoints": "نقاط الضعف",
+    "compare": "مقارنة مع الآخرين",
+    "minutes": "دقائق"
+  },
+  "timed": {
+    "title": "تحدي الوقت",
+    "selectDuration": "اختر المدّة",
+    "start": "ابدأ",
+    "timeUp": "⏰ انتهى الوقت!",
+    "score": "النقاط",
+    "back": "رجوع",
+    "share": "مشاركة"
+  },
+  "game": {
+    "loading": "جارٍ التحميل...",
+    "back": "رجوع",
+    "monsters": {
+      "slime": "Slime",
+      "goblin": "Goblin",
+      "skeleton": "Skeleton",
+      "shadowWolf": "Shadow Wolf",
+      "gargoyle": "Gargoyle",
+      "fireElemental": "Fire Elemental",
+      "frostGiant": "Frost Giant",
+      "poisonDragon": "Poison Dragon"
+    },
+    "log": {
+      "appeared": "{{emoji}} {{name}} appeared!",
+      "stageAppeared": "Stage {{n}}! {{emoji}} {{name}} appeared!",
+      "correct": "Correct! Dealt {{dmg}} damage{{combo}}",
+      "comboBonus": " ({{n}}-combo!)",
+      "defeated": "{{emoji}} {{name}} defeated! +{{xp}}XP +{{coins}} coins",
+      "playerHit": "{{emoji}} took {{dmg}} damage!",
+      "playerDefeated": "{{emoji}} You were defeated...",
+      "levelUp": "Level Up! Lv.{{lv}}! HP={{hp}}",
+      "wrongHit": "Wrong! Hit for -{{dmg}} HP"
+    },
+    "grade": "Grade {{n}}",
+    "stage": "Stage {{n}}"
+  },
+  "dailyChallenge": {
+    "title": "تحدي اليوم",
+    "completed": "مكتمل ✅",
+    "notCompleted": "غير مكتمل",
+    "reward": "المكافأة: 50 عملة",
+    "start": "ابدأ التحدي"
+  },
+  "engine": {
+    "knowledge": {
+      "add10": "الجمع حتى 10",
+      "sub10": "الطرح حتى 10",
+      "add20": "الجمع حتى 20",
+      "sub20": "الطرح حتى 20",
+      "add100": "الجمع حتى 100",
+      "sub100": "الطرح حتى 100",
+      "mul": "الضرب",
+      "div": "القسمة",
+      "fracAdd": "جمع الكسور",
+      "fracSub": "طرح الكسور",
+      "fracMul": "ضرب الكسور",
+      "fracDiv": "قسمة الكسور",
+      "decMul": "ضرب الأعداد العشرية",
+      "decDiv": "قسمة الأعداد العشرية",
+      "percent": "النسبة المئوية",
+      "ratio": "النسبة والتناسب",
+      "area": "المساحة",
+      "compare": "المقارنة",
+      "add10000": "Addition within 10000",
+      "multiDigitMul1": "Multi-digit times one digit",
+      "fracIntro": "Introduction to fractions",
+      "multiDigitMulDiv": "Multi-digit multiplication and division",
+      "decimalOps": "Decimal operations",
+      "simpleEq": "Simple equations",
+      "fracFourOps": "Fraction four operations",
+      "decimalMulDiv": "Decimal multiplication and division",
+      "basicStats": "Basic statistics",
+      "fracDecPct": "Fractions, decimals, and percentages",
+      "circleArea": "Circle circumference and area",
+      "wordProblem": "Word problems"
+    },
+    "names": [
+      "أحمد",
+      "فاطمة",
+      "عمر",
+      "نور",
+      "خالد"
+    ],
+    "items": [
+      "تفاحات",
+      "أقلام",
+      "ممحاة",
+      "حلوى",
+      "بالونات"
+    ],
+    "templates": {
+      "buyMore": "مع {{name}} {{a}} {{item}} واشترى {{b}} المزيد. كم العدد الإجمالي؟",
+      "giveAway": "مع {{name}} {{a}} {{item}} وأعطى {{b}}. كم تبقّى؟",
+      "share": "مع {{name}} {{total}} {{item}} موزّعة بالتساوي على {{people}} أشخاص. كم يحصل كل واحد؟"
+    },
+    "hint": {
+      "tryCount": "المحاولة #{{count}} — فكّر جيّدًا!",
+      "addition": "تلميح: جرّب العدّ تصاعديًا من الرقم الأكبر",
+      "subtraction": "تلميح: جرّب العدّ تنازليًا",
+      "multiplication": "تلميح: تذكّر جدول الضرب"
+    }
+  },
+  "feedback": {
+    "great": "رائع! واصل هكذا!",
+    "tryAgain": "لا تقلق، حاول مرّة أخرى!",
+    "levelUp": "ارتقيت!",
+    "congrats": "مبروك على الارتقاء!",
+    "keepGoing": "واصل التقدّم!"
+  },
+  "levelTitles": [
+    "مبتدئ",
+    "مستكشف الأرقام",
+    "متدرّب الجمع",
+    "نجم الطرح",
+    "ساحر الرياضيات",
+    "محترف الحساب",
+    "سيد الأرقام",
+    "عبقري الرياضيات",
+    "أستاذ الرياضيات",
+    "ملك الرياضيات"
+  ],
+  "achievements": {
+    "first_win": {
+      "name": "First Steps",
+      "desc": "Complete your first game"
+    },
+    "score_100": {
+      "name": "Rising Star",
+      "desc": "Score 100 in a single game"
+    },
+    "score_500": {
+      "name": "Math Star",
+      "desc": "Score 500 in a single game"
+    },
+    "score_1000": {
+      "name": "Math Hero",
+      "desc": "Score 1000 in a single game"
+    },
+    "accuracy_90": {
+      "name": "Sharpshooter",
+      "desc": "Reach 90% accuracy"
+    },
+    "accuracy_100": {
+      "name": "Perfectionist",
+      "desc": "100% accuracy in a game (≥10 questions)"
+    },
+    "games_10": {
+      "name": "Keep Learning",
+      "desc": "Complete 10 games"
+    },
+    "questions_50": {
+      "name": "Hard Worker",
+      "desc": "Answer 50 questions correctly"
+    },
+    "questions_200": {
+      "name": "Question Master",
+      "desc": "Answer 200 questions correctly"
+    },
+    "streak_10": {
+      "name": "10-Streak",
+      "desc": "Get 10 correct answers in a row"
+    },
+    "games_50": {
+      "name": "Scholar's Path",
+      "desc": "Complete 50 games"
+    },
+    "timed_30": {
+      "name": "Flash",
+      "desc": "Answer 30 questions in timed challenge"
+    },
+    "streak_days_7": {
+      "name": "Weekly Warrior",
+      "desc": "Learn 7 days in a row"
+    },
+    "score_2000": {
+      "name": "Math King",
+      "desc": "Score 2000 in a single game"
+    },
+    "games_100": {
+      "name": "Century Player",
+      "desc": "Complete 100 games"
+    },
+    "streak_20": {
+      "name": "20-Streak",
+      "desc": "Get 20 correct answers in a row"
+    }
+  },
+  "combo": {
+    "3": "أحسنت!",
+    "5": "مذهل!",
+    "10": "خرافي!",
+    "label": "كومبو"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "back": "رجوع",
+    "share": "مشاركة",
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "close": "إغلاق",
+    "reset": "إعادة تعيين",
+    "coins": "عملات"
+  }
+}

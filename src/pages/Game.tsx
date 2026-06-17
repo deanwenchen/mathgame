@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useTranslation } from '@/i18n'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -11,7 +12,7 @@ import {
 import { generateQuestion } from '@engine/questions'
 
 interface Monster {
-  name: string
+  key: string
   emoji: string
   hp: number
   maxHp: number
@@ -30,22 +31,22 @@ interface Character {
 type Phase = 'select' | 'battle' | 'result'
 
 const MONSTERS = [
-  { name: '史莱姆', emoji: '' },
-  { name: '哥布林', emoji: '' },
-  { name: '骷髅兵', emoji: '' },
-  { name: '暗影狼', emoji: '' },
-  { name: '石像鬼', emoji: '' },
-  { name: '火焰精灵', emoji: '' },
-  { name: '冰霜巨人', emoji: '' },
-  { name: '毒龙', emoji: '' },
+  { key: 'slime', emoji: '' },
+  { key: 'goblin', emoji: '' },
+  { key: 'skeleton', emoji: '' },
+  { key: 'shadowWolf', emoji: '' },
+  { key: 'gargoyle', emoji: '' },
+  { key: 'fireElemental', emoji: '' },
+  { key: 'frostGiant', emoji: '' },
+  { key: 'poisonDragon', emoji: '' },
 ]
 
 function createMonster(stage: number): Monster {
-  const t = MONSTERS[Math.min(stage - 1, MONSTERS.length - 1)]
+  const m = MONSTERS[Math.min(stage - 1, MONSTERS.length - 1)]
   const hp = 30 + stage * 15
   return {
-    name: t.name,
-    emoji: t.emoji,
+    key: m.key,
+    emoji: m.emoji,
     hp,
     maxHp: hp,
     attack: 5 + stage * 3,
@@ -57,6 +58,7 @@ const XP_PER_LEVEL = 50
 const SPRING = { type: 'spring' as const, stiffness: 300, damping: 20 }
 
 function Game() {
+  const { t } = useTranslation()
   const [phase, setPhase] = useState<Phase>('select')
   const [grade, setGrade] = useState(1)
   const [stage, setStage] = useState(1)
@@ -105,9 +107,9 @@ function Game() {
       setSelectedAnswer(null)
       setIsCorrect(null)
       setPhase('battle')
-      addLog(`${m.emoji} ${m.name} 出现了！`)
+      addLog(t('game.log.appeared', { emoji: m.emoji, name: t(`game.monsters.${m.key}`) }))
     },
-    [addLog]
+    [addLog, t]
   )
 
   const nextStage = useCallback(() => {
@@ -120,8 +122,8 @@ function Game() {
     setIsCorrect(null)
     setShowHint(false)
     setCombo(0)
-    addLog(`第${ns}关！${m.emoji} ${m.name} 出现了！`)
-  }, [stage, grade, addLog])
+    addLog(t('game.log.stageAppeared', { n: ns, emoji: m.emoji, name: t(`game.monsters.${m.key}`) }))
+  }, [stage, grade, addLog, t])
 
   const handleAnswer = useCallback(
     (answer: number) => {
@@ -137,12 +139,12 @@ function Game() {
         const dmg = Math.floor((8 + grade * 2) * mult)
         const newHp = Math.max(0, monster.hp - dmg)
         addDmg(dmg, 'monster')
-        addLog(`正确！造成 ${dmg} 伤害${mult > 1 ? ` (${newCombo}连击!)` : ''}`)
+        addLog(t('game.log.correct', { dmg, combo: mult > 1 ? t('game.log.comboBonus', { n: newCombo }) : '' }))
         setMonster((p) => (p ? { ...p, hp: newHp } : null))
 
         if (newHp <= 0) {
           addLog(
-            `${monster.emoji} ${monster.name} 被击败！+${monster.reward.xp}XP +${monster.reward.coins}金币`
+            t('game.log.defeated', { emoji: monster.emoji, name: t(`game.monsters.${monster.key}`), xp: monster.reward.xp, coins: monster.reward.coins })
           )
           addDmg(monster.reward.xp, 'monster')
           setTimeout(() => {
@@ -159,7 +161,7 @@ function Game() {
                 nxt = Math.floor(XP_PER_LEVEL * Math.pow(1.3, lv - 1))
                 maxHp += 10
                 hp = maxHp
-                addLog(`升级！Lv.${lv}！HP=${maxHp}`)
+                addLog(t('game.log.levelUp', { lv, hp: maxHp }))
               }
               return {
                 ...prev,
@@ -178,7 +180,7 @@ function Game() {
         }
       } else {
         addDmg(monster.attack, 'player')
-        addLog(`错误！被攻击，-${monster.attack} HP`)
+        addLog(t('game.log.wrongHit', { dmg: monster.attack }))
         addMistake({
           id: question.id,
           question: question.expression,
@@ -206,7 +208,7 @@ function Game() {
         setShowHint(false)
       }, 1500)
     },
-    [selectedAnswer, monster, question, combo, grade, addDmg, addLog, character.hp]
+    [selectedAnswer, monster, question, combo, grade, addDmg, addLog, character.hp, t]
   )
 
   useEffect(() => {
@@ -238,8 +240,8 @@ function Game() {
             animate={{ opacity: 1, y: 0 }}
             transition={SPRING}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">数学大冒险</h1>
-            <p className="text-purple-300">选择年级，开始你的冒险之旅！</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{t('adventure.level')}</h1>
+            <p className="text-purple-300">{t('adventure.start')}</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -249,7 +251,7 @@ function Game() {
           >
             <div className="flex items-center justify-between text-sm mb-2">
               <span className="text-purple-300 font-bold">Lv.{character.level}</span>
-              <span className="text-amber-400 font-bold">{character.coins} 金币</span>
+              <span className="text-amber-400 font-bold">{character.coins} {t('common.coins')}</span>
             </div>
             <div className="flex justify-between text-xs text-gray-400 mb-1">
               <span>HP</span>
@@ -285,13 +287,13 @@ function Game() {
                 onClick={() => startBattle(g)}
                 className="py-4 bg-gradient-to-br from-purple-500/80 to-indigo-600/80 backdrop-blur-sm rounded-2xl border border-white/20 text-white font-bold text-lg shadow-lg active:scale-[0.98]"
               >
-                {g}年级
+                {t('game.grade', { n: g })}
               </motion.button>
             ))}
           </div>
           <Link to="/" className="text-purple-400 hover:text-purple-300 text-sm transition-colors">
             {' '}
-            返回首页
+            {t('game.back')}
           </Link>
         </div>
       </div>
@@ -311,10 +313,10 @@ function Game() {
               />
             </div>
           </div>
-          <span className="text-amber-400 text-sm font-bold">第{stage}关</span>
+          <span className="text-amber-400 text-sm font-bold">{t('adventure.level')} {stage}</span>
           <div className="flex items-center gap-2">
             {combo >= 3 && (
-              <span className="text-orange-400 text-xs font-bold animate-pulse">{combo}连击!</span>
+              <span className="text-orange-400 text-xs font-bold animate-pulse">{t('quiz.combo', {count: combo})}</span>
             )}
             <span className="text-amber-400 text-sm">{character.coins}</span>
           </div>
@@ -334,7 +336,7 @@ function Game() {
               {monster.emoji}
             </motion.div>
             <div className="mt-2">
-              <span className="text-white font-bold text-lg">{monster.name}</span>
+              <span className="text-white font-bold text-lg">{t(`game.monsters.${monster.key}`)}</span>
               <div className="w-32 h-2 bg-gray-700 rounded-full overflow-hidden mx-auto mt-1">
                 <motion.div
                   className="h-full bg-gradient-to-r from-red-500 to-red-400 rounded-full"
@@ -407,7 +409,7 @@ function Game() {
                   className={`mt-4 text-center py-2 rounded-xl ${isCorrect ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}
                 >
                   <p className="font-bold">
-                    {isCorrect ? ' 正确！' : ` 错误！答案是 ${question.answer}`}
+                    {isCorrect ? t('quiz.correct') : t('quiz.wrong', {answer: question.answer})}
                   </p>
                 </motion.div>
               )}
@@ -417,7 +419,7 @@ function Game() {
                 onClick={() => setShowHint(!showHint)}
                 className="mt-2 text-xs text-purple-400 hover:text-purple-300"
               >
-                {showHint ? `提示：${question.hint}` : '需要提示？'}
+                {showHint ? `${t('quiz.hint')}: ${question.hint}` : t('quiz.hint')}
               </button>
             )}
           </motion.div>
@@ -467,36 +469,36 @@ function Game() {
             transition={{ delay: 0.2, type: 'spring', stiffness: 400, damping: 15 }}
           >
             <div className="text-6xl mb-4">{result.won ? '' : '💔'}</div>
-            <h2 className="text-3xl font-bold text-white">{result.won ? '胜利！' : '失败'}</h2>
+            <h2 className="text-3xl font-bold text-white">{result.won ? t('adventure.congrats') : t('quiz.gameOver')}</h2>
             <p className="text-purple-300 mt-2">
-              {result.won ? `${monster?.name} 被击败了！` : '下次继续加油！'}
+              {result.won && monster ? t(`game.monsters.${monster.key}`) : t('feedback.keepGoing')}
             </p>
           </motion.div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-blue-500/20 rounded-xl p-3">
               <div className="text-2xl font-bold text-blue-400">+{result.xp}</div>
-              <div className="text-xs text-gray-400">经验值</div>
+              <div className="text-xs text-gray-400">XP</div>
             </div>
             <div className="bg-amber-500/20 rounded-xl p-3">
               <div className="text-2xl font-bold text-amber-400">+{result.coins}</div>
-              <div className="text-xs text-gray-400">金币</div>
+              <div className="text-xs text-gray-400">{t('common.coins')}</div>
             </div>
           </div>
           <div className="bg-white/5 rounded-xl p-4 space-y-2 text-left text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">等级</span>
+              <span className="text-gray-400">{t('quiz.level', {level: character.level})}</span>
               <span className="text-white font-bold">Lv.{character.level}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">总经验</span>
+              <span className="text-gray-400">XP</span>
               <span className="text-white font-bold">{character.totalXp} XP</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">金币</span>
+              <span className="text-gray-400">{t('common.coins')}</span>
               <span className="text-amber-400 font-bold">{character.coins}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">历史最高</span>
+              <span className="text-gray-400">{t('home.stats.highScore')}</span>
               <span className="text-purple-400 font-bold">{stats.highScore}</span>
             </div>
           </div>
@@ -508,7 +510,7 @@ function Game() {
                 onClick={nextStage}
                 className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold rounded-full shadow-lg active:scale-[0.98]"
               >
-                继续冒险 →
+                {t('adventure.start')} →
               </motion.button>
             )}
             <motion.button
@@ -517,10 +519,10 @@ function Game() {
               onClick={() => setPhase('select')}
               className="w-full py-3 bg-white/10 text-white font-medium rounded-full border border-white/20 hover:bg-white/20 active:scale-[0.98]"
             >
-              选择年级
+              {t('home.nav.startAdventure')}
             </motion.button>
             <Link to="/quiz" className="block text-purple-400 text-sm hover:text-purple-300">
-              去答题练习 →
+              {t('home.nav.quiz')} →
             </Link>
           </div>
         </motion.div>

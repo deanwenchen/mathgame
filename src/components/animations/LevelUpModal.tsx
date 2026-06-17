@@ -6,6 +6,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState, useCallback } from 'react'
+import { useTranslation } from '@/i18n'
 import { DURATION, EASING } from '../../utils/animations'
 import ConfettiEffect from './ConfettiEffect'
 
@@ -20,20 +21,6 @@ interface LevelUpModalProps {
   onClose: () => void
   /** 自动关闭延迟 (毫秒)，0 表示不自动关闭 */
   autoCloseDelay?: number
-}
-
-// 等级对应的称号
-const LEVEL_TITLES: Record<number, string> = {
-  1: '算术新手',
-  2: '计算小兵',
-  3: '数字达人',
-  4: '计算能手',
-  5: '数学高手',
-  6: '算术大师',
-  7: '计算专家',
-  8: '数学天才',
-  9: '算术大师',
-  10: '数学王者',
 }
 
 // 等级对应的颜色主题
@@ -187,9 +174,10 @@ export function LevelUpModal({
   onClose,
   autoCloseDelay = 3000,
 }: LevelUpModalProps) {
+  const { t } = useTranslation()
   const [showConfetti, setShowConfetti] = useState(false)
   const colors = LEVEL_COLORS[newLevel] || LEVEL_COLORS[1]
-  const title = LEVEL_TITLES[newLevel] || '算术新手'
+  const title = t(`levelTitles.${newLevel - 1}`)
 
   // 触发纸屑效果
   useEffect(() => {
@@ -255,7 +243,7 @@ export function LevelUpModal({
                   transition={{ delay: 0.1 }}
                   className="text-2xl font-bold text-gray-700 mb-4"
                 >
-                  恭喜升级!
+                  {t('feedback.levelUp')}
                 </motion.div>
 
                 {/* 等级数字 */}
@@ -306,7 +294,7 @@ export function LevelUpModal({
                     transition={{ delay: 0.6 }}
                     className="text-gray-500 text-sm mb-4"
                   >
-                    等级 {previousLevel} → 等级 {newLevel}
+                    {t('quiz.level', { level: previousLevel })} → {t('quiz.level', { level: newLevel })}
                   </motion.div>
                 )}
 
@@ -324,7 +312,7 @@ export function LevelUpModal({
                     transition-all duration-200
                   `}
                 >
-                  继续挑战!
+                  {t('feedback.keepGoing')}
                 </motion.button>
               </div>
 

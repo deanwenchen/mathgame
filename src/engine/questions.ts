@@ -3,6 +3,8 @@
  * 覆盖 1-6 年级核心知识点
  */
 
+import { i18n } from '@/i18n'
+
 export interface Question {
   id: string
   grade: number
@@ -15,37 +17,74 @@ export interface Question {
 }
 
 const KNOWLEDGE_POINTS: Record<number, string[]> = {
-  1: ['10以内加法', '10以内减法', '20以内加法', '20以内减法'],
-  2: ['100以内加法', '100以内减法', '表内乘法'],
-  3: ['万以内加减法', '多位数乘一位数', '分数初步'],
-  4: ['多位数乘除法', '小数运算', '简易方程'],
-  5: ['分数四则运算', '小数乘除法', '简单统计'],
-  6: ['分数小数百分数', '比和比例', '圆的周长面积'],
+  1: [
+    i18n.t('engine.knowledge.add10'),
+    i18n.t('engine.knowledge.sub10'),
+    i18n.t('engine.knowledge.add20'),
+    i18n.t('engine.knowledge.sub20'),
+  ],
+  2: [
+    i18n.t('engine.knowledge.add100'),
+    i18n.t('engine.knowledge.sub100'),
+    i18n.t('engine.knowledge.mul'),
+  ],
+  3: [
+    i18n.t('engine.knowledge.add10000'),
+    i18n.t('engine.knowledge.multiDigitMul1'),
+    i18n.t('engine.knowledge.fracIntro'),
+  ],
+  4: [
+    i18n.t('engine.knowledge.multiDigitMulDiv'),
+    i18n.t('engine.knowledge.decimalOps'),
+    i18n.t('engine.knowledge.simpleEq'),
+  ],
+  5: [
+    i18n.t('engine.knowledge.fracFourOps'),
+    i18n.t('engine.knowledge.decimalMulDiv'),
+    i18n.t('engine.knowledge.basicStats'),
+  ],
+  6: [
+    i18n.t('engine.knowledge.fracDecPct'),
+    i18n.t('engine.knowledge.ratio'),
+    i18n.t('engine.knowledge.circleArea'),
+  ],
 }
 
 const WORD_TEMPLATES = [
   {
     template: (a: number, b: number, name: string, item: string) =>
-      `${name}有${a}个${item}，又买了${b}个，一共有几个？`,
+      i18n.t('engine.templates.buyMore', { name, a, item, b }),
     answer: (a: number, b: number) => a + b,
     type: 'add' as const,
   },
   {
     template: (a: number, b: number, name: string, item: string) =>
-      `${name}有${a}个${item}，送给朋友${b}个，还剩几个？`,
+      i18n.t('engine.templates.giveAway', { name, a, item, b }),
     answer: (a: number, b: number) => a - b,
     type: 'subtract' as const,
   },
   {
-    template: (a: number, b: number, name: string, item: string) =>
-      `每盒${item}有${a}个，${name}买了${b}盒，一共有几个？`,
-    answer: (a: number, b: number) => a * b,
-    type: 'multiply' as const,
+    template: (total: number, people: number, name: string, item: string) =>
+      i18n.t('engine.templates.share', { name, total, item, people }),
+    answer: (total: number, people: number) => total / people,
+    type: 'divide' as const,
   },
 ]
 
-const NAMES = ['小明', '小红', '小华', '小丽', '小刚']
-const ITEMS = ['苹果', '铅笔', '橡皮', '糖果', '气球']
+const NAMES = [
+  i18n.t('engine.names.0'),
+  i18n.t('engine.names.1'),
+  i18n.t('engine.names.2'),
+  i18n.t('engine.names.3'),
+  i18n.t('engine.names.4'),
+]
+const ITEMS = [
+  i18n.t('engine.items.0'),
+  i18n.t('engine.items.1'),
+  i18n.t('engine.items.2'),
+  i18n.t('engine.items.3'),
+  i18n.t('engine.items.4'),
+]
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -106,7 +145,7 @@ export function generateQuestion(grade: number = 1): Question {
       const b = randomInt(min, max)
       expression = `${a} + ${b} = ?`
       answer = a + b
-      hint = `从${a}往后数${b}个数`
+      hint = i18n.t('engine.hint.addition')
       break
     }
     case 'subtract': {
@@ -114,7 +153,7 @@ export function generateQuestion(grade: number = 1): Question {
       const b = randomInt(min, a)
       expression = `${a} - ${b} = ?`
       answer = a - b
-      hint = `从${a}往前数${b}个数`
+      hint = i18n.t('engine.hint.subtraction')
       break
     }
     case 'multiply': {
@@ -123,7 +162,7 @@ export function generateQuestion(grade: number = 1): Question {
       const b = randomInt(2, mulMax)
       expression = `${a} × ${b} = ?`
       answer = a * b
-      hint = `${a}个${b}相加`
+      hint = i18n.t('engine.hint.multiplication')
       break
     }
     case 'divide': {
@@ -132,7 +171,7 @@ export function generateQuestion(grade: number = 1): Question {
       const a = b * answerVal
       expression = `${a}  ${b} = ?`
       answer = answerVal
-      hint = `${a}平均分成${b}份`
+      hint = i18n.t('engine.hint.division')
       break
     }
     case 'word': {
@@ -143,7 +182,7 @@ export function generateQuestion(grade: number = 1): Question {
       const b = randomInt(2, 10)
       expression = tmpl.template(a, b, name, item)
       answer = tmpl.answer(a, b)
-      hint = '求一共用加法，求还剩用减法'
+      hint = i18n.t('engine.hint.wordProblem')
       break
     }
   }
@@ -157,6 +196,67 @@ export function generateQuestion(grade: number = 1): Question {
     options: generateOptions(answer),
     hint,
     knowledgePoint,
+  }
+}
+
+// Word problem templates
+const WORD_PROBLEM_TEMPLATES = [
+  {
+    template: (a: number, b: number) =>
+      i18n.t('engine.templates.buyMore', {
+        name: i18n.t('engine.names.0'),
+        a,
+        item: i18n.t('engine.items.0'),
+        b,
+      }),
+    answer: (a: number, b: number) => a + b,
+    type: 'word' as const,
+  },
+  {
+    template: (a: number, b: number) =>
+      i18n.t('engine.templates.giveAway', {
+        name: i18n.t('engine.names.0'),
+        a,
+        item: i18n.t('engine.items.0'),
+        b,
+      }),
+    answer: (a: number, b: number) => a - b,
+    type: 'word' as const,
+  },
+  {
+    template: (total: number, people: number) =>
+      i18n.t('engine.templates.share', {
+        name: i18n.t('engine.names.0'),
+        total,
+        item: i18n.t('engine.items.0'),
+        people,
+      }),
+    answer: (total: number, people: number) => total / people,
+    type: 'word' as const,
+  },
+]
+
+export function generateWordProblem(grade: number): Question {
+  const tmpl = WORD_PROBLEM_TEMPLATES[Math.floor(Math.random() * WORD_PROBLEM_TEMPLATES.length)]
+  const maxNum = grade <= 2 ? 20 : grade <= 4 ? 100 : 1000
+  const a = Math.floor(Math.random() * maxNum) + 1
+  const b = Math.floor(Math.random() * maxNum) + 1
+  const expr = tmpl.template(a, b)
+  const answer = tmpl.answer(a, b)
+  const options = new Set([answer])
+  while (options.size < 4) {
+    const w = answer + Math.floor(Math.random() * 20) - 10
+    if (w >= 0 && w !== answer) options.add(w)
+  }
+  return {
+    id: `word_${Date.now()}_${Math.random()}`,
+    grade,
+    type: 'word',
+    expression: expr,
+    answer,
+    options: [...options].sort(() => Math.random() - 0.5),
+    hint: i18n.t('engine.hint.wordProblem'),
+    knowledgePoint: i18n.t('engine.knowledge.wordProblem'),
   }
 }
 

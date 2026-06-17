@@ -1,0 +1,394 @@
+{
+  "home": {
+    "title": "算数の魔法使い",
+    "subtitle": "楽しいゲームで算数を学ぼう——算数マスターになろう！",
+    "streak": "学習継続：{{count}} 日",
+    "darkMode": "目にやさしいモード",
+    "lightMode": "ライトモード",
+    "footer": "対象年齢 6〜12歳",
+    "theme": {
+      "default": "デフォルト",
+      "ocean": "うみ",
+      "forest": "もり",
+      "candy": "おかし"
+    },
+    "auth": {
+      "login": "ログイン",
+      "register": "新規登録",
+      "username": "ユーザー名",
+      "nickname": "ニックネーム（任意）",
+      "loginRegister": "ログイン / 新規登録（クラウド同期）",
+      "logout": "ログアウト",
+      "upload": "進捗をアップロード",
+      "restore": "クラウドから復元",
+      "syncing": "同期中...",
+      "synced": "✅ クラウドに同期しました",
+      "loading": "読み込み中...",
+      "cloudData": "クラウドデータ",
+      "noCloudData": "❌ クラウドデータが見つかりません",
+      "loginSuccess": "ログインしました！",
+      "registerSuccess": "登録しました！",
+      "loginFailed": "ログインに失敗しました",
+      "registerFailed": "登録に失敗しました",
+      "usernameRequired": "ユーザー名を入力してください"
+    },
+    "stats": {
+      "title": "マイ統計",
+      "highScore": "ハイスコア",
+      "bestLevel": "ベストレベル",
+      "accuracy": "正解率",
+      "summary": "{{games}} ゲーム · {{questions}} 問",
+      "games": "ゲーム"
+    },
+    "achievements": {
+      "recent": "最近の達成",
+      "viewAll": "すべて見る",
+      "unlocked": "{{count}} / {{total}} 個の達成を解放"
+    },
+    "daily": {
+      "title": "毎日ミッション",
+      "claimed": "受取済み",
+      "claimReward": "報酬を受け取る",
+      "todayGoal": "今日の目標",
+      "goalReached": "🎉 目標達成！報酬を受け取ろう！",
+      "keepGoing": "あと {{remaining}} 問——がんばって！"
+    },
+    "nav": {
+      "quiz": "クイズチャレンジ",
+      "startAdventure": "冒険スタート",
+      "timedChallenge": "タイムチャレンジ",
+      "adventure": "冒険モード",
+      "survival": "サバイバル",
+      "precision": "せいどモード",
+      "mistakes": "まちがいノート",
+      "achievements": "達成一覧",
+      "leaderboard": "ランキング",
+      "challenge": "チャレンジ",
+      "parent": "保護者",
+      "report": "レポート"
+    }
+  },
+  "quiz": {
+    "score": "スコア",
+    "question": "問題",
+    "of": "/",
+    "timeLeft": "のこり時間",
+    "checkAnswer": "こたえ合わせ",
+    "nextQuestion": "次の問題",
+    "correct": "✅ 正解！",
+    "wrong": "❌ 不正解！正解は {{answer}}",
+    "coinsEarned": "+{{amount}} コイン！",
+    "combo": "コンボ ×{{count}}",
+    "comboBonus": "コンボ ×{{count}}！ダメージ +{{percent}}%",
+    "level": "レベル {{level}}",
+    "hint": "💡 ヒント",
+    "soundOn": "サウンド：オン",
+    "soundOff": "サウンド：オフ",
+    "easy": "かんたん",
+    "medium": "ふつう",
+    "hard": "むずかしい",
+    "gameOver": "ゲームオーバー！",
+    "finalScore": "ファイナルスコア",
+    "correctRate": "正解率",
+    "timeSpent": "かかった時間",
+    "coins": "コイン",
+    "playAgain": "もう一度",
+    "share": "シェア",
+    "back": "戻る",
+    "streakBonus": "🔥 {{count}} 連続正解！ダメージ +{{percent}}%",
+    "hintCounting": "Try counting {{n}} numbers forward from {{start}}",
+    "hintCountingBack": "Try counting {{n}} numbers back from {{start}}",
+    "hintMultiplication": "{{a}} groups of {{b}}, what's the total?"
+  },
+  "adventure": {
+    "level": "レベル",
+    "reward": "報酬",
+    "start": "スタート",
+    "completed": "クリア ✅",
+    "locked": "🔒 ロック中",
+    "congrats": "🎉 レベルクリア！",
+    "totalScore": "トータルスコア"
+  },
+  "survival": {
+    "lives": "ライフ",
+    "gameOver": "💀 ゲームオーバー！",
+    "score": "スコア",
+    "correct": "✅ 正解！",
+    "wrong": "❌ 不正解！ライフ -1"
+  },
+  "precision": {
+    "title": "せいどモード",
+    "gameOver": "❌ ゲームオーバー！1回でもまちがったらおしまい！",
+    "score": "スコア",
+    "correct": "✅ 正解！",
+    "wrong": "❌ 不正解！"
+  },
+  "mistakes": {
+    "title": "まちがいノート",
+    "noMistakes": "まだまちがいないよ！🎉",
+    "practice": "練習する",
+    "search": "問題やテーマを検索",
+    "all": "すべて",
+    "weakPoints": "にがて",
+    "mastery": "マスター度：{{value}}%",
+    "practiceTitle": "まちがい練習",
+    "complete": "練習完了！",
+    "correctCount": "正解：{{count}} 問",
+    "wrongCount": "不正解：{{count}} 問",
+    "accuracy": "正解率：{{value}}%",
+    "back": "戻る",
+    "next": "次へ",
+    "answer": "こたえ",
+    " mastered": "✅ マスターした！",
+    "stillLearning": "📝 まなび中"
+  },
+  "achievement": {
+    "title": "達成の壁",
+    "unlocked": "解放済み",
+    "locked": "未解放",
+    "share": "シェア",
+    "shared": "シェアしたよ！",
+    "back": "戻る"
+  },
+  "leaderboard": {
+    "title": "ランキング",
+    "rank": "順位",
+    "score": "スコア",
+    "level": "レベル",
+    "noRecords": "まだ記録がないよ",
+    "back": "戻る"
+  },
+  "parent": {
+    "title": "保護者管理",
+    "enterPin": "PINを入力",
+    "confirm": "確認",
+    "wrongPin": "PINが正しくありません",
+    "enable": "保護者管理を有効にする",
+    "setPin": "PINを設定",
+    "newPin": "新しい4桁のPINを入力",
+    "confirmPin": "PINを再入力",
+    "pinMismatch": "PINが一致しません",
+    "saveSettings": "設定を保存",
+    "dailyLimit": "1日の利用時間制限",
+    "minutes": "分",
+    "timeRestrict": "利用時間帯の制限",
+    "startTime": "開始時間",
+    "endTime": "終了時間",
+    "saved": "✅ 設定を保存しました",
+    "back": "戻る"
+  },
+  "report": {
+    "title": "学習レポート",
+    "weekly": "週間",
+    "monthly": "月間",
+    "studyTime": "学習時間",
+    "accuracyTrend": "正解率の推移",
+    "weakPoints": "にがてなポイント",
+    "compare": "みんなとの比較",
+    "minutes": "分"
+  },
+  "timed": {
+    "title": "タイムチャレンジ",
+    "selectDuration": "時間を選ぶ",
+    "start": "スタート",
+    "timeUp": "⏰ 時間切れ！",
+    "score": "スコア",
+    "back": "戻る",
+    "share": "シェア"
+  },
+  "game": {
+    "loading": "読み込み中...",
+    "back": "戻る",
+    "monsters": {
+      "slime": "Slime",
+      "goblin": "Goblin",
+      "skeleton": "Skeleton",
+      "shadowWolf": "Shadow Wolf",
+      "gargoyle": "Gargoyle",
+      "fireElemental": "Fire Elemental",
+      "frostGiant": "Frost Giant",
+      "poisonDragon": "Poison Dragon"
+    },
+    "log": {
+      "appeared": "{{emoji}} {{name}} appeared!",
+      "stageAppeared": "Stage {{n}}! {{emoji}} {{name}} appeared!",
+      "correct": "Correct! Dealt {{dmg}} damage{{combo}}",
+      "comboBonus": " ({{n}}-combo!)",
+      "defeated": "{{emoji}} {{name}} defeated! +{{xp}}XP +{{coins}} coins",
+      "playerHit": "{{emoji}} took {{dmg}} damage!",
+      "playerDefeated": "{{emoji}} You were defeated...",
+      "levelUp": "Level Up! Lv.{{lv}}! HP={{hp}}",
+      "wrongHit": "Wrong! Hit for -{{dmg}} HP"
+    },
+    "grade": "Grade {{n}}",
+    "stage": "Stage {{n}}"
+  },
+  "dailyChallenge": {
+    "title": "今日のチャレンジ",
+    "completed": "クリア ✅",
+    "notCompleted": "未クリア",
+    "reward": "報酬：50 コイン",
+    "start": "チャレンジ開始"
+  },
+  "engine": {
+    "knowledge": {
+      "add10": "10までのたし算",
+      "sub10": "10までのひき算",
+      "add20": "20までのたし算",
+      "sub20": "20までのひき算",
+      "add100": "100までのたし算",
+      "sub100": "100までのひき算",
+      "mul": "かけ算",
+      "div": "わり算",
+      "fracAdd": "分数のたし算",
+      "fracSub": "分数のひき算",
+      "fracMul": "分数のかけ算",
+      "fracDiv": "分数のわり算",
+      "decMul": "小数のかけ算",
+      "decDiv": "小数のわり算",
+      "percent": "百分率",
+      "ratio": "比と割合",
+      "area": "面積",
+      "compare": "くらべっこ",
+      "add10000": "Addition within 10000",
+      "multiDigitMul1": "Multi-digit times one digit",
+      "fracIntro": "Introduction to fractions",
+      "multiDigitMulDiv": "Multi-digit multiplication and division",
+      "decimalOps": "Decimal operations",
+      "simpleEq": "Simple equations",
+      "fracFourOps": "Fraction four operations",
+      "decimalMulDiv": "Decimal multiplication and division",
+      "basicStats": "Basic statistics",
+      "fracDecPct": "Fractions, decimals, and percentages",
+      "circleArea": "Circle circumference and area",
+      "wordProblem": "Word problems"
+    },
+    "names": [
+      "太郎",
+      "花子",
+      "翔太",
+      "美咲",
+      "大輝"
+    ],
+    "items": [
+      "りんご",
+      "えんぴつ",
+      "けしごむ",
+      "キャンディ",
+      "ふうせん"
+    ],
+    "templates": {
+      "buyMore": "{{name}}は{{item}}を{{a}}個持っていて、{{b}}個買いました。あわせていくつ？",
+      "giveAway": "{{name}}は{{item}}を{{a}}個持っていて、{{b}}個あげました。のこりはいくつ？",
+      "share": "{{name}}は{{total}}個の{{item}}を{{people}}人でわけました。1人なんぼ？"
+    },
+    "hint": {
+      "tryCount": "{{count}}回目のチャレンジ——よく考えてね！",
+      "addition": "ヒント：おおきなかずからもえいっことかぞえてみよう",
+      "subtraction": "ヒント：うしろにかぞえてみよう",
+      "multiplication": "ヒント：かけざんひょうをおぼえているかな？"
+    }
+  },
+  "feedback": {
+    "great": "すごい！このちょうし！",
+    "tryAgain": "だいじょうぶ、もう一回！",
+    "levelUp": "レベルアップ！",
+    "congrats": "おめでとう！レベルが上がったよ！",
+    "keepGoing": "がんばりつづけよう！"
+  },
+  "levelTitles": [
+    "算数ビギナー",
+    "かずのたんけん家",
+    "たし算のでっち",
+    "ひき算のスター",
+    "算数の魔法使い",
+    "けいさんのプロ",
+    "かずのマスター",
+    "算数の天才",
+    "算数のせんせい",
+    "算数の王さま"
+  ],
+  "achievements": {
+    "first_win": {
+      "name": "First Steps",
+      "desc": "Complete your first game"
+    },
+    "score_100": {
+      "name": "Rising Star",
+      "desc": "Score 100 in a single game"
+    },
+    "score_500": {
+      "name": "Math Star",
+      "desc": "Score 500 in a single game"
+    },
+    "score_1000": {
+      "name": "Math Hero",
+      "desc": "Score 1000 in a single game"
+    },
+    "accuracy_90": {
+      "name": "Sharpshooter",
+      "desc": "Reach 90% accuracy"
+    },
+    "accuracy_100": {
+      "name": "Perfectionist",
+      "desc": "100% accuracy in a game (≥10 questions)"
+    },
+    "games_10": {
+      "name": "Keep Learning",
+      "desc": "Complete 10 games"
+    },
+    "questions_50": {
+      "name": "Hard Worker",
+      "desc": "Answer 50 questions correctly"
+    },
+    "questions_200": {
+      "name": "Question Master",
+      "desc": "Answer 200 questions correctly"
+    },
+    "streak_10": {
+      "name": "10-Streak",
+      "desc": "Get 10 correct answers in a row"
+    },
+    "games_50": {
+      "name": "Scholar's Path",
+      "desc": "Complete 50 games"
+    },
+    "timed_30": {
+      "name": "Flash",
+      "desc": "Answer 30 questions in timed challenge"
+    },
+    "streak_days_7": {
+      "name": "Weekly Warrior",
+      "desc": "Learn 7 days in a row"
+    },
+    "score_2000": {
+      "name": "Math King",
+      "desc": "Score 2000 in a single game"
+    },
+    "games_100": {
+      "name": "Century Player",
+      "desc": "Complete 100 games"
+    },
+    "streak_20": {
+      "name": "20-Streak",
+      "desc": "Get 20 correct answers in a row"
+    }
+  },
+  "combo": {
+    "3": "いいね！",
+    "5": "すごい！",
+    "10": "しんい！",
+    "label": "コンボ"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "back": "戻る",
+    "share": "シェア",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "close": "とじる",
+    "reset": "リセット",
+    "coins": "コイン"
+  }
+}

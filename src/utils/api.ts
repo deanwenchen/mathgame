@@ -1,4 +1,4 @@
-// API 客户端 - 云端同步功能
+// API client - Cloud sync
 
 export interface User {
   id: number
@@ -16,7 +16,7 @@ export interface QuizProgress {
   updated_at: string
 }
 
-// 注册
+// Register
 export async function register(
   username: string,
   nickname?: string,
@@ -34,7 +34,7 @@ export async function register(
   }
 }
 
-// 登录
+// Login
 export async function login(
   username: string,
   password?: string
@@ -51,7 +51,7 @@ export async function login(
   }
 }
 
-// 保存进度到云端
+// Save progress to cloud
 export async function saveProgress(
   userId: number,
   progress: QuizProgress
@@ -68,7 +68,7 @@ export async function saveProgress(
   }
 }
 
-// 从云端加载进度
+// Load progress from cloud
 export async function loadProgress(
   userId: number
 ): Promise<{ success: boolean; data?: QuizProgress; error?: string }> {
@@ -80,7 +80,7 @@ export async function loadProgress(
   }
 }
 
-// 本地存储当前用户
+// Local user session storage
 export function saveCurrentUser(user: User): void {
   localStorage.setItem('current_user', JSON.stringify(user))
 }

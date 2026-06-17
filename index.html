@@ -1,11 +1,91 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="儿童算数小能手 - 寓教于乐的数学学习游戏" />
-    <title>儿童算数小能手</title>
+
+    <!-- Default SEO (English); dynamically replaced by src/i18n.tsx based on detected language -->
+    <title>Math Wizard — Fun Math Games for Kids Ages 6-12</title>
+    <meta name="description" content="Free online math games for children! RPG adventures, timed challenges, achievement system. Learn addition, subtraction, multiplication through play. No download needed." />
+    <meta name="keywords" content="math games, kids math, learn math, math for children, math adventure, multiplication game, addition game, math wizard, educational games" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="author" content="Math Wizard" />
+
+    <!-- Canonical (default English version) -->
+    <link rel="canonical" href="https://math-game.lazytoolshub.top/" />
+
+    <!-- hreflang alternates: tell Google about all 15 language variants -->
+    <link rel="alternate" hreflang="en" href="https://math-game.lazytoolshub.top/" />
+    <link rel="alternate" hreflang="zh" href="https://math-game.lazytoolshub.top/?lang=zh" />
+    <link rel="alternate" hreflang="es" href="https://math-game.lazytoolshub.top/?lang=es" />
+    <link rel="alternate" hreflang="fr" href="https://math-game.lazytoolshub.top/?lang=fr" />
+    <link rel="alternate" hreflang="de" href="https://math-game.lazytoolshub.top/?lang=de" />
+    <link rel="alternate" hreflang="ja" href="https://math-game.lazytoolshub.top/?lang=ja" />
+    <link rel="alternate" hreflang="pt" href="https://math-game.lazytoolshub.top/?lang=pt" />
+    <link rel="alternate" hreflang="ar" href="https://math-game.lazytoolshub.top/?lang=ar" />
+    <link rel="alternate" hreflang="ko" href="https://math-game.lazytoolshub.top/?lang=ko" />
+    <link rel="alternate" hreflang="ru" href="https://math-game.lazytoolshub.top/?lang=ru" />
+    <link rel="alternate" hreflang="tr" href="https://math-game.lazytoolshub.top/?lang=tr" />
+    <link rel="alternate" hreflang="vi" href="https://math-game.lazytoolshub.top/?lang=vi" />
+    <link rel="alternate" hreflang="th" href="https://math-game.lazytoolshub.top/?lang=th" />
+    <link rel="alternate" hreflang="hi" href="https://math-game.lazytoolshub.top/?lang=hi" />
+    <link rel="alternate" hreflang="it" href="https://math-game.lazytoolshub.top/?lang=it" />
+    <link rel="alternate" hreflang="x-default" href="https://math-game.lazytoolshub.top/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Math Wizard" />
+    <meta property="og:url" content="https://math-game.lazytoolshub.top/" />
+    <meta property="og:title" content="Math Wizard — Fun Math Games for Kids Ages 6-12" />
+    <meta property="og:description" content="Free online math games for children! Learn addition, subtraction, multiplication through play. RPG adventures, timed challenges, achievements." />
+    <meta property="og:image" content="https://math-game.lazytoolshub.top/og-image.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="vi_VN" />
+    <meta property="og:locale:alternate" content="th_TH" />
+    <meta property="og:locale:alternate" content="hi_IN" />
+    <meta property="og:locale:alternate" content="it_IT" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Math Wizard — Fun Math Games for Kids" />
+    <meta name="twitter:description" content="Free online math games for children ages 6-12. Learn through play!" />
+    <meta name="twitter:image" content="https://math-game.lazytoolshub.top/og-image.png" />
+
+    <!-- JSON-LD structured data: helps Google show Rich Snippets -->
+    <script type="application/ld+json" id="json-ld-app">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalApplication",
+      "name": "Math Wizard",
+      "description": "Free online math games for children ages 6-12. RPG adventures, timed challenges, achievements.",
+      "url": "https://math-game.lazytoolshub.top/",
+      "inLanguage": "en",
+      "applicationCategory": "EducationalApplication",
+      "educationalLevel": "Primary education",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "audienceType": "children ages 6-12"
+      },
+      "typicalAgeRange": "6-12",
+      "operatingSystem": "Any (web browser)",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "learningResourceType": ["Game", "Quiz", "Interactive activity"],
+      "teaches": ["Addition", "Subtraction", "Multiplication", "Division", "Word Problems", "Fractions"]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
